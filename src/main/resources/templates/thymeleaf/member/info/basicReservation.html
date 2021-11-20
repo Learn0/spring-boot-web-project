@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>내 정보</title>
+		<style>
+			.table > thead > tr > th:first-child {
+				width: 60px;
+			}
+			.table > thead > tr > th:nth-child(2) {
+				width: 200px;
+			}
+			.table > thead > tr > th:last-child {
+				min-width: 130px;
+			}
+			.table > thead > tr > th {
+				width: 100px;
+			}
+			.table > tbody > tr {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="nav">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=0}">계정변경</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=1}">장바구니</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=2}">레시피찜</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=3}">영화예매</a>
+				</div>
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=4}">맛집예약</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=5}">서울여행예약</a>
+				</div>
+			</div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="content">
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+					<tr class="success">
+						<th>번호</th>
+						<th th:text="${type==4?'식당명':'명소명'}"></th>
+						<th>인원수</th>
+						<th>주차여부</th>
+						<th sec:authorize="hasRole('ROLE_ADMIN')">예약자</th>
+						<th sec:authorize="hasRole('ROLE_ADMIN')">전화번호</th>
+						<th>예약일</th>
+						<th>처리현황</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr sec:authorize="hasRole('ROLE_ADMIN')" th:if="${not #lists.isEmpty(reservationList)}"
+						th:each="reservationDTO:${reservationList}" th:object="${reservationDTO}"
+						th:onclick="viewTarget([[ *{targetIdx} ]])">
+						<td th:text="*{idx}"></td>
+						<td th:text="*{title}"></td>
+						<td th:text="*{peopleNumber}+명"></td>
+						<td th:text="*{parking}"></td>
+						<td th:text="*{writer}"></td>
+						<td class="phoneNumber" th:text="*{phoneNumber}"></td>
+						<td th:text="*{#temporals.format(reservationTime, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:if="*{status != 0}" th:text="*{status==1?'승인 완료':'승인 거부'}"></td>
+						<td th:if="*{status == 0}">
+							<input type="button" class="btn btn-xs btn-primary" style="width:50px; height:30px" th:onclick="reservationCheck(this, [[ *{idx} ]], 1)" value="승인" />
+							<input type="button" class="btn btn-xs btn-danger" style="width:50px; height:30px" th:onclick="reservationCheck(this, [[ *{idx} ]], -1)" value="거부" />
+						</td>
+					</tr>
+					<tr sec:authorize="hasRole('ROLE_USER')" th:if="${not #lists.isEmpty(reservationList)}"
+						th:each="reservationDTO:${reservationList}" th:object="${reservationDTO}"
+						th:onclick="viewTarget([[ *{targetIdx} ]])">
+						<td th:text="*{idx}"></td>
+						<td th:text="*{title}"></td>
+						<td th:text="*{peopleNumber}+명"></td>
+						<td th:text="*{parking}"></td>
+						<td th:text="*{#temporals.format(reservationTime, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="*{status==0?'처리 대기중':(status==1?'승인 완료':'승인 거부')}"></td>
+					</tr>
+					<tr th:unless="${not #lists.isEmpty(reservationList)}">
+						<td colspan="100%">조회된 결과가 없습니다.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			let type;
+			$(function(){
+				$(".navbar-nav:nth-child("+parseInt(1 + ("[[ ${type} ]]" / 4))+") > a.navbar-brand:nth-child("+parseInt(1 + ("[[ ${type} ]]" % 4))+")").addClass("active");
+				
+				$(".phoneNumber").each(function(){
+					$(this).text(phoneNumberCheck($(this).text()));
+				});
+			});
+
+			const viewTarget=(idx)=>{
+				let link;
+				if(type === 4){
+					link = /*[[ @{/restaurant/view?idx=} ]]*/"";
+				}else{
+					link = /*[[ @{/seoulAttractions/view?type=0&idx=} ]]*/"";
+				}
+				link += idx;
+				location.href = link;
+			}
+		
+			const reservationCheck=(obj, idx, status)=>{
+				event.stopPropagation();
+				
+				let uri = /*[[ @{/reservation/update} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+				let data = {
+						"idx" : idx,
+						"status" : status
+					}
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : data,
+					success : function(response) {
+						if(response != null){
+							$(obj).parent().text(response);
+						}else{
+							alert("실패하였습니다.");
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			}
+		</script>
+	</th:block>
+</html>

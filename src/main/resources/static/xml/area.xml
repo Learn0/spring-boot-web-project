@@ -1,0 +1,920 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE total SYSTEM "area.dtd">
+<total>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>강남구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>강동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>강북구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>강서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>관악구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>광진구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>구로구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>금천구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>노원구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>도봉구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>동대문구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>동작구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>마포구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>서대문구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>서초구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>성동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>성북구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>송파구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>양천구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>영등포구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>용산구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>은평구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>종로구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>중구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>서울특별시</area_nm>
+		<borough_nm>중랑구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>강서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>금정구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>기장군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>남구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>동래구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>부산진구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>북구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>사상구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>사하구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>수영구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>연제구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>영도구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>중구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>부산광역시</area_nm>
+		<borough_nm>해운대구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>남구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>달서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>달성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>북구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>수성구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대구광역시</area_nm>
+		<borough_nm>중구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>강화군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>계양구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>남동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>미추홀구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>부평구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>연수구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>옹진군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>인천광역시</area_nm>
+		<borough_nm>중구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>광주광역시</area_nm>
+		<borough_nm>광산구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>광주광역시</area_nm>
+		<borough_nm>남구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>광주광역시</area_nm>
+		<borough_nm>동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>광주광역시</area_nm>
+		<borough_nm>북구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>광주광역시</area_nm>
+		<borough_nm>서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대전광역시</area_nm>
+		<borough_nm>대덕구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대전광역시</area_nm>
+		<borough_nm>동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대전광역시</area_nm>
+		<borough_nm>서구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대전광역시</area_nm>
+		<borough_nm>유성구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>대전광역시</area_nm>
+		<borough_nm>중구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>울산광역시</area_nm>
+		<borough_nm>남구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>울산광역시</area_nm>
+		<borough_nm>동구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>울산광역시</area_nm>
+		<borough_nm>북구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>울산광역시</area_nm>
+		<borough_nm>울주군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>울산광역시</area_nm>
+		<borough_nm>중구</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>세종특별자치시</area_nm>
+		<borough_nm>세종특별자치시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>가평군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>고양시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>과천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>광명시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>광주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>구리시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>군포시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>김포시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>남양주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>동두천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>부천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>성남시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>수원시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>시흥시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>안산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>안성시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>안양시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>양주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>양평군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>여주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>연천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>오산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>용인시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>의왕시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>의정부시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>이천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>파주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>평택시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>포천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>하남시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경기도</area_nm>
+		<borough_nm>화성시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>강릉시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>고성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>동해시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>삼척시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>속초시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>양구군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>양양군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>영월군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>원주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>인제군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>정선군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>철원군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>춘천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>태백시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>평창군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>홍천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>화천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>강원도</area_nm>
+		<borough_nm>횡성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>괴산군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>단양군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>보은군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>영동군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>옥천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>음성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>제천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>증평군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>진천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>청주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청북도</area_nm>
+		<borough_nm>충주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>계룡시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>공주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>금산군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>논산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>당진시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>보령시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>부여군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>서산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>서천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>아산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>예산군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>천안시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>청양군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>태안군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>충청남도</area_nm>
+		<borough_nm>홍성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>고창군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>군산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>김제시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>남원시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>무주군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>부안군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>순창군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>완주군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>익산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>임실군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>장수군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>전주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>정읍시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라북도</area_nm>
+		<borough_nm>진안군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>강진군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>고흥군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>곡성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>광양시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>구례군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>나주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>담양군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>목포시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>무안군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>보성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>순천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>신안군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>여수시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>영광군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>영암군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>완도군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>장성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>장흥군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>진도군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>함평군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>해남군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>전라남도</area_nm>
+		<borough_nm>화순군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>경산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>경주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>고령군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>구미시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>군위군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>김천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>문경시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>봉화군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>상주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>성주군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>안동시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>영덕군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>영양군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>영주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>영천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>예천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>울릉군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>울진군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>의성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>청도군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>청송군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>칠곡군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상북도</area_nm>
+		<borough_nm>포항시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>거제시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>거창군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>고성군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>김해시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>남해군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>밀양시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>사천시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>산청군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>양산시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>의령군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>진주시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>창녕군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>창원시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>통영시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>하동군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>함안군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>함양군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>경상남도</area_nm>
+		<borough_nm>합천군</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>제주특별자치도</area_nm>
+		<borough_nm>서귀포시</borough_nm>
+	</area>
+	<area name="test_area" borough="test_borough">
+		<area_nm>제주특별자치도</area_nm>
+		<borough_nm>제주시</borough_nm>
+	</area>
+</total>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang = "ko" xmlns:th = "http://www.thymeleaf.org"
+	xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate = "~{thymeleaf/layout/basic}">
+	<head>
+		<title>게시판</title>
+	</head>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				let uri = /*[[ @{${uri}} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+				let boardDTO = "idx=[[ ${idx} ]]";
+				let password = /*[[ ${password} ]]*/"";
+				if(password != ""){
+					boardDTO += "&password="+password
+				}
+				
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : boardDTO,
+					success : function(response) {
+						$("body").children().remove();
+						$("body").html(response);
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			});
+		</script>
+	</th:block>
+</html>

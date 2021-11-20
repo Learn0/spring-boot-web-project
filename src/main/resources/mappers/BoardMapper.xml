@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.ourshopping.mapper.BoardMapper">
+	<sql id="search">
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCheckBox != null">
+				<trim prefix="WHERE (" suffix=")" prefixOverrides="OR">
+					<foreach collection="searchCheckBox" item="checkBox">
+						<trim prefix="OR">
+							<choose>
+								<when test="checkBox.equals('title')">
+									title LIKE CONCAT('%', #{searchKeyword}, '%')
+								</when>
+								<when test="checkBox.equals('content')">
+									content LIKE CONCAT('%', #{searchKeyword}, '%')
+								</when>
+								<when test="checkBox.equals('writer')">
+									member.nickname LIKE CONCAT('%',
+									#{searchKeyword}, '%')
+								</when>
+							</choose>
+						</trim>
+					</foreach>
+				</trim>
+			</if>
+		</if>
+	</sql>
+
+	<select id="selectBoardGroup" resultType="hashMap">
+		SELECT NVL(MAX(group_idx)+1,1) as groupIdx, 1 as groupOrder, 0 as groupDepth
+		FROM board
+	</select>
+
+	<insert id="insertBoard" useGeneratedKeys="true"
+		keyProperty="idx" parameterType="BoardDTO">
+		INSERT INTO board
+		VALUES (
+		NUll,
+		#{groupIdx},
+		#{groupOrder},
+		#{groupDepth},
+		#{title},
+		#{content},
+		#{memberIdx},
+		#{password},
+		0,
+		IFNULL(#{noticeCheck}, 'N'),
+		'N',
+		NOW(),
+		NULL,
+		NULL
+		)
+	</insert>
+
+	<update id="updateBoardOrder" parameterType="hashMap">
+		UPDATE board
+		SET group_order = group_order+1
+		WHERE group_idx = #{groupIdx} AND group_order &gt;= #{groupOrder}
+	</update>
+
+	<select id="selectBoard" parameterType="int"
+		resultType="BoardDTO">
+		SELECT board.idx, group_idx, group_order, group_depth,
+		title, content, member_Idx, board.password, view_count, notice_check,
+		board.delete_check, board.insert_time, board.update_time, board.delete_time, member.nickname as writer
+		FROM board JOIN member
+		ON member_idx = member.idx
+		WHERE board.delete_check = 'N' AND
+		board.idx = #{idx}
+	</select>
+
+	<!-- 
+		오라클 페이징 기법
+		SELECT idx, title, content 
+		FROM (SELECT idx, title, content, rownum as num 
+		FROM (SELECT /*+ INDEX_DESC(board pk_board_index) */ idx, title, content)
+		WHERE num BETWEEN #{pageInfo.firstRow} AND #{rowCount};
+		
+		rownum(오라클) = @ROWNUM:=@ROWNUM+1 as rownum(MariaDB @변수 사용)
+	-->
+	<select id="searchBoard" parameterType="SearchDTO"
+		resultType="BoardDTO">
+		SELECT board.idx, group_depth, title, content, member.nickname as
+		writer, board.password, view_count, notice_check, board.delete_check,
+		board.insert_time, board.update_time, board.delete_time, TIMESTAMPDIFF(minute, board.insert_time, NOW()) &lt; 10 as new_check
+		FROM board JOIN member
+		ON member_idx = member.idx
+		<include refid="search" />
+		ORDER BY notice_check ASC, group_idx DESC, group_order DESC, board.insert_time DESC
+		LIMIT #{pageInfo.firstRow}, #{rowCount}
+	</select>
+
+	<select id="searchBoardCount" parameterType="SearchDTO"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM board JOIN member
+		ON member_idx = member.idx
+		<include refid="search" />
+	</select>
+
+	<update id="viewCount" parameterType="int">
+		UPDATE board
+		SET view_count = view_count+1
+		WHERE idx = #{idx}
+	</update>
+
+	<update id="updateBoard" parameterType="BoardDTO">
+		UPDATE board
+		SET update_time = NOW(), title = #{title}, content = #{content}, password
+		= #{password}, notice_check = IFNULL(#{noticeCheck}, 'N')
+		WHERE idx = #{idx}
+	</update>
+
+	<update id="deleteBoard" parameterType="int">
+		UPDATE board
+		SET delete_check = 'Y', delete_time = NOW()
+		WHERE idx = #{idx}
+	</update>
+</mapper>

@@ -1,0 +1,5 @@
+<!ELEMENT total (area+)>
+<!ELEMENT area (area_nm,borough_nm)>
+<!ELEMENT area_nm (#PCDATA)>
+<!ELEMENT borough_nm (#PCDATA)>
+<!ATTLIST area name CDATA "" borough CDATA "">

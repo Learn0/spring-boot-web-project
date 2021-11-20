@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.ourshopping.mapper.MusicMapper">
+	<sql id="selectAll">
+		idx,
+		poster,
+		title,
+		singer,
+		album,
+		state,
+		increment,
+		youtube_key
+	</sql>
+
+	<sql id="search">
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<trim prefix="WHERE (" suffix=")">
+				idx LIKE CONCAT('%',
+				#{searchKeyword}, '%')
+				OR title LIKE CONCAT('%',
+				#{searchKeyword}, '%')
+				OR singer
+				LIKE CONCAT('%', #{searchKeyword},
+				'%')
+			</trim>
+		</if>
+	</sql>
+
+	<insert id="insertMusic" parameterType="MusicDTO">
+		INSERT INTO music (
+		<include refid="selectAll" />
+		) VALUES (
+		#{idx},
+		#{poster},
+		#{title},
+		#{singer},
+		#{album},
+		#{state},
+		#{increment},
+		#{youtubeKey}
+		)
+	</insert>
+
+	<select id="searchMusic" parameterType="SearchDTO"
+		resultType="MusicDTO">
+		SELECT
+		<include refid="selectAll" />
+		FROM music
+		<include refid="search" />
+		LIMIT #{pageInfo.firstRow}, #{rowCount}
+	</select>
+
+	<select id="searchMusicCount" parameterType="SearchDTO"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM music
+		<include refid="search" />
+	</select>
+
+	<update id="deleteMusic">
+		DELETE FROM music
+	</update>
+</mapper>

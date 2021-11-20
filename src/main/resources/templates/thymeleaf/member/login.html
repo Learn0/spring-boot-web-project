@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>로그인</title>
+		<style>
+			div > img {
+				width: 300px;
+				display: block;
+				margin: 0px auto;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="content">
+		<div class="clearfix">
+			<form th:action="@{/member/login_send}" method="post" onsubmit="return login()">
+				<div style="float: left; width: calc(100% - 100px)">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<label style="margin:0px" for="email">
+								<i class="glyphicon glyphicon-envelope"></i>
+							</label>
+						</span>
+						<input type="text" class="form-control" id="email" name="email"
+							placeholder="Email" oninput="noSpaceForm(this)">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">
+							<label style="margin:0px" for="password">
+								<i class="glyphicon glyphicon-lock"></i>
+							</label>
+						</span>
+						<input type="password"
+							class="form-control" id="password" name="password"
+							placeholder="Password" oninput="noSpaceForm(this)">
+					</div>
+				</div>
+				<div style="float: right; width: 100px">
+					<button type="submit" class="btn btn-primary"
+						style="width: 100%; height: 90px; padding: 0px">로그인</button>
+				</div>
+				<div style="clear: both; font-size: 25px; margin-left: 10px; float:left">
+					<input type="checkbox" id="auto" name="auto" checked /> <label
+						for="auto" style="margin:0px">자동로그인</label>
+				</div>
+				<div style="float:right; margin-top:5px">
+					 <a th:href="@{/member/findPassword}" style="color:white">비밀번호 찾기</a> | <a th:href="@{/member/signup}" style="color:white">회원가입</a>
+				</div>
+			</form>
+			<div style="clear:both; margin-bottom:10px">
+				<span id="valid_login" th:text="${loginFailMsg}"></span>
+			</div>
+			<div>
+				<img th:src="@{/images/google.png}"
+					th:onclick="location.href=[[ @{/oauth2/authorization/google} ]]" />
+				<img th:src="@{/images/naver.png}"
+					th:onclick="location.href=[[ @{/oauth2/authorization/naver} ]]" />
+				<img th:src="@{/images/kakao.png}"
+					th:onclick="location.href=[[ @{/oauth2/authorization/kakao} ]]" />
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			const login=()=>{
+				let valid_login = $("#valid_login");
+				let email = $("#email");
+				if (email.val() === "") {
+					email.focus();
+					valid_login.text("이메일을 입력하세요.");
+
+	                return false;
+				} else if (!emailCheck(email.val())) {
+					email.focus();
+					valid_login.text("이메일 형식에 맞지 않습니다.");
+
+	                return false;
+				}
+				let password = $("#password");
+				if (password.val() === "") {
+					password.focus();
+					valid_login.text("비밀번호을 입력하세요.");
+
+	                return false;
+				}
+			}
+		</script>
+	</th:block>
+</html>

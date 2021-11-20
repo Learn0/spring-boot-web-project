@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.ourshopping.mapper.BasicCommentMapper">
+	<insert id="insertComment" parameterType="BasicCommentDTO">
+		<selectKey keyProperty="idx" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(idx)+1,1) as idx FROM basic_comment
+		</selectKey>
+		INSERT INTO basic_comment
+		VALUES (
+		#{idx},
+		#{targetIdx},
+		#{targetType},
+		#{content},
+		#{memberIdx},
+		IFNULL(#{deleteCheck}, 'N'),
+		NOW(),
+		NULL,
+		NULL
+		)
+	</insert>
+
+	<select id="searchComment" parameterType="BasicCommentDTO"
+		resultType="BasicCommentDTO">
+		SELECT bc.idx, target_idx, target_type, content,
+		member_idx, bc.delete_check, bc.insert_time,
+		bc.update_time, bc.delete_time, member.nickname as writer
+		FROM basic_comment as bc JOIN member
+		ON member_idx = member.idx
+		WHERE target_idx = #{targetIdx} AND target_type = #{targetType}
+		ORDER BY bc.idx DESC, bc.insert_time DESC
+	</select>
+
+	<update id="updateComment" parameterType="BasicCommentDTO">
+		UPDATE basic_comment
+		SET update_time = NOW(), content = #{content}
+		WHERE idx = #{idx}
+	</update>
+
+	<update id="deleteComment" parameterType="int">
+		UPDATE basic_comment
+		SET delete_check = 'Y', delete_time = NOW()
+		WHERE idx = #{idx}
+	</update>
+</mapper>

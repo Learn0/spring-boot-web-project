@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>서울 명소</title>
+		<style>
+			.img-thumbnail {
+				width: calc(20% - 30px);
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="nav">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=0}">명소</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=1}">엔터테인먼트</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=2}">호텔</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=3}">관광</a>
+				</div>
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=4}">음식</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=5}">게스트 하우스</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=6}">쇼핑</a>
+				</div>
+			</div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="modal">
+		<div th:replace="thymeleaf/layout/commentModal"></div>
+	</th:block>
+	<th:block layout:fragment="content">
+		<h2 style="color:white" th:text="${title}"></h2>
+		<div style="width: 100%; text-align: center">
+			<img th:each="img,index:${#strings.arraySplit(attractionsDTO.poster, '^')}" th:if="${index.count <= 5}" th:src="${img}" th:onError="this.src=[[ @{/images/pic08.jpg} ]]" class="img-thumbnail" />
+		</div>
+		<table class="table">
+			<tbody>
+				<tr>
+					<td colspan=2>
+						<h2 th:text="${attractionsDTO.title}"></h2>
+					</td>
+				</tr>
+				<tr th:if="${not #strings.equals(attractionsDTO.content, '-')}">
+					<td colspan=2 th:text="${attractionsDTO.content}">
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 20%" class=text-right>주소</th>
+					<td style="width: 80%" th:text="${attractionsDTO.address}"></td>
+				</tr>
+				<tr th:if="${not #strings.isEmpty(attractionsDTO.phoneNumber)}">
+					<th style="width: 20%" class=text-right>전화번호</th>
+					<td style="width: 80%" th:text="${attractionsDTO.phoneNumber}"></td>
+				</tr>
+				<tr th:if="${not #strings.isEmpty(attractionsDTO.businessTime)}">
+					<th style="width: 20%" class=text-right>영업시간</th>
+					<td style="width: 80%" th:text="${attractionsDTO.businessTime}"></td>
+				</tr>
+				<tr th:if="${not #strings.isEmpty(attractionsDTO.businessWeek)}">
+					<th style="width: 20%" class=text-right>운영 요일</th>
+					<td style="width: 80%" th:text="${attractionsDTO.businessWeek}"></td>
+				</tr>
+				<tr th:if="${not #strings.isEmpty(attractionsDTO.site)}">
+					<th style="width: 20%" class=text-right>홈페이지</th>
+					<td style="width: 80%"><a th:href="${attractionsDTO.site}" th:text="${attractionsDTO.site}" target="_blank"></a></td>
+				</tr>
+				<tr th:if="${not #strings.isEmpty(attractionsDTO.tip)}">
+					<th style="width: 20%" class=text-right>팁</th>
+					<td style="width: 80%" th:text="${attractionsDTO.tip}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="text-center table-btn">
+			<input type="button" class="btn btn-default" onclick="window.history.back()" value="뒤로가기" />
+			<input th:if="${type == 0}" type="button" class="btn btn-success" onclick="viewReservation()" value="예약하기" />
+		</div>
+	</th:block>
+	<th:block layout:fragment = "comment">
+		<div th:replace="thymeleaf/layout/comment"></div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				commentIdx = /*[[ ${attractionsDTO.idx} ]]*/"";
+				commentType = /*[[ ${attractionsDTO.type} ]]*/"";
+				resetCommentList();
+				
+				$(".navbar-nav:nth-child("+parseInt(1 + ("[[ ${type} ]]" / 4))+") > a.navbar-brand:nth-child("+parseInt(1 + ("[[ ${type} ]]" % 4))+")").addClass("active");
+			});
+			
+			const viewReservation=()=>{
+				if(!/*[[ ${session.memberIdx} ]]*/""){
+					alert("로그인 후 가능합니다.");
+					return;
+				}
+				let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+				let token = /*[[ ${_csrf.token} ]]*/"";
+				let title = /*[[ ${attractionsDTO.title} ]]*/"";
+				let targetIdx = /*[[ ${attractionsDTO.idx} ]]*/"";
+				let targetType = /*[[ ${attractionsDTO.type} ]]*/"";
+				let uri = /*[[ @{/reservation/write} ]]*/"";
+				let form = $("<form></form>");
+				form.attr("action", uri);
+				form.attr("method", "post");
+				form.appendTo('body');
+				form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+				form.append("<input type='hidden' name='title' value="+title+" />");
+				form.append("<input type='hidden' name='targetIdx' value="+targetIdx+" />");
+				form.append("<input type='hidden' name='targetType' value="+targetType+" />");
+				form.submit();
+			}
+		</script>
+	</th:block>
+</html>

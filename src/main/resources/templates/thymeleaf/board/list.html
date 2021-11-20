@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>게시판</title>
+		<style>
+			.table > thead > tr > th:first-child {
+				width: 80px;
+			}
+			.table > thead > tr > th:last-child {
+				width: 100px;
+			}
+			.table > tbody > tr > td:nth-child(2) {
+				max-width: 230px;
+			}
+			.table > tbody > tr > td:nth-child(3) {
+				max-width: 100px;
+			}
+			.table > tbody > tr > td:nth-child(4) {
+				max-width: 110px;
+			}
+			.table > tbody > tr {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="content">
+		<div class="input-group">
+			<input type="text" id="searchKeyword" class="form-control" th:value="${searchDTO.searchKeyword}" placeholder="키워드를 입력해 주세요." />
+			<div class="input-group-btn">
+				<div class="btn-group" style="height:100%; margin:0px; padding:0px">
+					<div class="dropdown dropdown-lg">
+						<button type="button" class="btn dropdown-toggle" style="height:45px" data-toggle="dropdown"><span class="caret"></span></button>
+						<div class="dropdown-menu dropdown-menu-right">
+							<form id="searchForm" th:action="@{/board/list}" th:object="${searchDTO}" method="get" class="form-horizontal">
+								<input type="hidden" name="page" value="1" />
+								<input type="hidden" name="searchKeyword" />
+								<div class="form-group" style="margin:10px">
+									<p style="color:black; width:100%; text-align:center">검색 유형</p>
+									<hr style="border: 0; height:3px; background:gray; margin:10px 0px">
+									<label for="checkbox1" style="color:black">제목:</label><input type="checkbox" id="checkbox1" name="searchCheckBox" value="title" th:checked="*{#lists.isEmpty(searchCheckBox) or #lists.contains(searchCheckBox, 'title')}" />
+									| <label for="checkbox2" style="color:black">작성자:</label><input type="checkbox" id="checkbox2" name="searchCheckBox" value="writer" th:checked="*{not #lists.isEmpty(searchCheckBox) and #lists.contains(searchCheckBox, 'writer')}" />
+									| <label for="checkbox3" style="color:black">내용:</label><input type="checkbox" id="checkbox3" name="searchCheckBox" value="content" th:checked="*{not #lists.isEmpty(searchCheckBox) and #lists.contains(searchCheckBox, 'content')}" />
+								</div>
+							</form>
+						</div>
+					</div>
+					<input type="button" class="btn btn-success" onclick="searchBoard()" value="검색" />
+				</div>
+			</div>
+		</div>
+		<table class="table table-hover">
+			<thead>
+				<tr class="warning">
+					<th>번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>날짜</th>
+					<th>조회 수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${not #lists.isEmpty(boardList)}"
+					th:each="boardDTO:${boardList}" th:object="${boardDTO}"
+					th:onclick="viewBoard([[ *{#strings.equals(deleteCheck, 'N') ? idx : -1} ]])">
+					<td th:text="*{#strings.equals(noticeCheck, 'Y') ? '공지' : idx}"></td>
+					<td>
+						<span th:if="*{deleteCheck == 'N'}" th:style="'text-align:left; padding-left:' + ${boardDTO.groupDepth<7 ? (boardDTO.groupDepth-1)*15 : 7*15} + 'px'" class="ellipsis">
+							<img th:if="*{groupDepth > 0}" th:src="@{/images/re_icon.png}" th:style="'float:left; filter:opacity(0.5) drop-shadow(0 0 0 ' + ${colorList[boardDTO.groupDepth]} + ')'">[[ *{title}+*{not #strings.isEmpty(password) ? '(잠금)' : ''}+*{not #strings.isEmpty(fileIdxs) ? '(파일)' : ''} ]]
+							<span style="color:red" th:text="*{newCheck ? ' NEW' : ''}"></span>
+						</span>
+						<span th:if="*{deleteCheck == 'Y'}" style="text-align:left" class="ellipsis">삭제된 게시글입니다.</span>
+					</td>
+					<td><span class="ellipsis">[[ *{writer} ]]</span></td>
+					<td><span class="ellipsis">[[ *{#strings.equals(deleteCheck, 'N') ? updateTime != null ? '(수정) '+#temporals.format(updateTime, 'yyyy-MM-dd') : '(등록) '+#temporals.format(insertTime, 'yyyy-MM-dd') : '(삭제) '+#temporals.format(deleteTime, 'yyyy-MM-dd')} ]]</span></td>
+					<td th:text="*{viewCount}"></td>
+				</tr>
+				<tr th:unless="${not #lists.isEmpty(boardList)}">
+					<td colspan="100%">조회된 결과가 없습니다.</td>
+				</tr>
+			</tbody>
+		</table>
+		<div style="text-align:right; margin-top:30px">
+			<form th:action="@{/board/write}" method="post" style="margin-bottom:0px">
+				<button type="submit" class="btn btn-primary">글쓰기</button>
+			</form>
+		</div>
+		<nav th:if="${searchDTO != null and searchDTO.pageInfo.pageCount > 0}" th:object="${searchDTO.pageInfo}" class="text-center">
+			<ul class="pagination">
+				<li th:if="*{previousCheck}" onclick="movePage(1)">
+					<a href="javascript:void(0)"><span>&laquo;</span></a>
+				</li>
+				<li th:if="*{previousCheck}" th:onclick="movePage([[ *{(firstPage - 1)} ]])">
+					<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+				</li>
+				<li th:each="pageNo:*{#numbers.sequence( firstPage, lastPage )}" th:onclick="movePage([[ ${pageNo} ]])" th:class="${pageNo == searchDTO.page} ? 'active'">
+					<a href="javascript:void(0)" th:text="${pageNo}"></a>
+				</li>
+				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{(lastPage + 1)} ]])">
+					<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+				</li>
+				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{pageCount} ]])">
+					<a href="javascript:void(0)"><span>&raquo;</span></a>
+				</li>
+			</ul>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			const viewBoard=(idx)=>{
+				if(idx === -1){
+					alert("삭제된 게시글입니다.");
+					return;
+				}
+				let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+				let token = /*[[ ${_csrf.token} ]]*/"";
+				let uri = /*[[ @{/board/viewCount} ]]*/"";
+				let form = $("<form></form>");
+				form.attr("action", uri);
+				//form.attr("method", "post");
+				form.appendTo('body');
+				form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+				form.append("<input type='hidden' name='idx' value="+idx+" />");
+				form.submit();
+			}
+	
+			const movePage=(page)=>{
+				let uri = /*[[ ${#request.requestURI} ]]*/"";
+				uri += "?page=" + page;
+				uri += "&searchKeyword=";
+				if(/*[[ ${searchDTO.searchKeyword} ]]*/"" != null){
+					uri += encodeURIComponent(/*[[ ${searchDTO.searchKeyword} ]]*/"");
+				}
+				uri += "&searchCheckBox=";
+				if(/*[[ ${searchDTO.searchCheckBox} ]]*/"" != null){
+					uri += encodeURIComponent(/*[[ ${searchDTO.searchCheckBox} ]]*/"");
+				}
+				location.replace(uri);
+			}
+	
+			const searchBoard=()=>{
+				let count = $("input:checked[type='checkbox']").length;
+				if(count === 0){
+					alert("검색 유형이 필요합니다.")
+					return false;
+				}
+				let searchKeyword = $("#searchKeyword");
+				let form = $("#searchForm")[0];
+				form.searchKeyword.value = searchKeyword.val();
+				form.submit();
+			}
+			
+            $("#searchKeyword").keydown(function(key) {
+                if (key.keyCode === 13) {
+                	searchBoard();
+                }
+            });
+		</script>
+	</th:block>
+</html>

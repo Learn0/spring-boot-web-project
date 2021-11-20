@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>에러</title>
+		<style>
+			li {
+				color: white;
+				width: 100%;
+				display: block;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="content">
+		<ul>
+			<li th:text="${'상태: ' + status}">
+			<li th:text="${'경로: ' + path}">
+			<li th:text="${'요청시각: ' + timestamp}">
+			<li th:text="${'예외 ' + exception}">
+			<li th:text="${'메시지: ' + message}">
+		</ul>
+	</th:block>
+</html>

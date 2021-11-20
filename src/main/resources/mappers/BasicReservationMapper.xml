@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.ourshopping.mapper.BasicReservationMapper">
+	<insert id="insertReservation"
+		parameterType="BasicReservationDTO">
+		INSERT INTO basic_reservation
+		VALUES (
+		#{idx},
+		#{targetIdx},
+		#{targetType},
+		#{memberIdx},
+		#{peopleNumber},
+		#{reservationTime},
+		#{parking},
+		#{status}
+		)
+	</insert>
+
+	<select id="searchReservation" parameterType="hashMap"
+		resultType="BasicReservationDTO">
+		SELECT
+		br.idx,
+		target_idx,
+		target_type,
+		member_idx,
+		people_number,
+		reservation_time,
+		parking,
+		status,
+		<choose>
+			<when test="targetType.equals('restaurant')">
+				restaurant.title
+				FROM basic_reservation as br JOIN restaurant
+				ON target_idx = restaurant.idx
+			</when>
+			<otherwise>
+				seoul_attractions.title
+				FROM basic_reservation as br JOIN seoul_attractions
+				ON target_idx = seoul_attractions.idx
+			</otherwise>
+		</choose>
+		JOIN member
+		ON member_idx = member.idx
+		WHERE target_type = #{targetType}
+		AND member_idx = #{memberIdx}
+		ORDER BY idx DESC
+	</select>
+
+	<select id="searchReservationAdmin" parameterType="String"
+		resultType="BasicReservationDTO">
+		SELECT
+		br.idx,
+		target_idx,
+		target_type,
+		member_idx,
+		people_number,
+		reservation_time,
+		parking,
+		status,
+		nickname as writer,
+		phone_number as phoneNumber,
+		<choose>
+			<when test="targetType.equals('restaurant')">
+				restaurant.title
+				FROM basic_reservation as br JOIN restaurant
+				ON target_idx = restaurant.idx
+			</when>
+			<otherwise>
+				seoul_attractions.title
+				FROM basic_reservation as br JOIN seoul_attractions
+				ON target_idx = seoul_attractions.idx
+			</otherwise>
+		</choose>
+		JOIN member
+		ON member_idx = member.idx
+		WHERE target_type = #{targetType}
+		ORDER BY idx DESC
+	</select>
+
+	<update id="updateReservation"
+		parameterType="BasicReservationDTO">
+		UPDATE basic_reservation 
+		SET status = #{status}
+		WHERE idx = #{idx}
+	</update>
+
+	<delete id="deleteReservation" parameterType="int">
+		DELETE FROM
+		basic_reservation
+		WHERE idx = #{idx}
+	</delete>
+</mapper>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang = "ko" xmlns:th = "http://www.thymeleaf.org"
+	xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/body}">
+	<th:block layout:fragment="modal">
+		<div th:replace="thymeleaf/layout/commentModal"></div>
+	</th:block>
+	<th:block layout:fragment = "content">
+		<div class="form-horizontal" th:object = "${boardDTO}">
+			<div class="form-group">
+				<div style="margin-top: 10px">
+					<div th:if="${#strings.equals(boardDTO.noticeCheck, 'N')}" style="color:white; font-size:30px">
+						일반 게시판
+					</div>
+					<div th:if="${#strings.equals(boardDTO.noticeCheck, 'Y')}" style="color:white; font-size:30px">
+						공지 게시판
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label">제목</label>
+				<div>
+					<input type="text" class="form-control" th:value = "*{title}" style="background-color:white" readonly />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label">내용</label>
+				<div>
+					<textarea class="form-control" th:text="*{content}" style="background-color:white" readonly></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label">작성자</label>
+				<div>
+					<input type="text" class="form-control" th:value="*{writer}" style="background-color:white" readonly />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label">날짜</label>
+				<div>
+					<input type="text" class="form-control" th:value = "*{#strings.equals(deleteCheck, 'N') ? updateTime != null ? '(수정) '+#temporals.format(updateTime, 'yyyy-MM-dd') : '(등록) '+#temporals.format(insertTime, 'yyyy-MM-dd') : '(삭제) '+#temporals.format(deleteTime, 'yyyy-MM-dd')}" style="background-color:white" readonly />
+				</div>
+			</div>
+
+			<div th:if="${not #lists.isEmpty(fileList)}" class="form-group">
+				<div>
+					<div th:each="fileDTO:${fileList}">
+						<div class="form-control file_list">
+							<a th:href = "@{/board/download(idx=${fileDTO.idx})}">
+								<i class="glyphicon glyphicon-file"></i>
+								[[ ${fileDTO.originalName} ]]
+							</a>
+						</div>
+						<img th:if="${#strings.contains(fileDTO.saveFile, '.png') 
+						or #strings.contains(fileDTO.saveFile, '.gif') 
+						or #strings.contains(fileDTO.saveFile, '.jp')}" 
+						class="filebox" th:src = "${#strings.substring(fileDTO.saveFile, #strings.indexOf(fileDTO.saveFile, 'upload')-1)}" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="text-center table-btn">
+			<input type="button" class="btn btn-default" onclick="backwardBoard()" value="뒤로가기" />
+			<span th:if="${session.memberIdx != null}">
+				<span th:if="${#strings.equals(boardDTO.noticeCheck, 'N') && (session.memberIdx != boardDTO.memberIdx || admin != null)}">
+					<input type="button" class="btn btn-success" onclick="writeBoard()" value="답변하기" />
+				</span>
+				<span th:if="${session.memberIdx == boardDTO.memberIdx || admin != null}">
+					<input type="button" class="btn btn-primary" onclick="updateBoard()" value="수정하기" />
+					<input type="button" class="btn btn-danger" onclick="deleteBoard()" value="삭제하기" />
+				</span>
+			</span>
+		</div>
+	</th:block>
+	<th:block layout:fragment = "comment">
+		<div th:replace="thymeleaf/layout/comment"></div>
+	</th:block>
+	<th:block layout:fragment = "script">
+		<script th:inline = "javascript">
+			$(function(){
+				commentIdx = /*[[ ${boardDTO.idx} ]]*/"";
+				commentType = "board";
+				resetCommentList();
+			});
+	
+			const backwardBoard=()=>{
+				if (document.referrer.includes("write")) {
+					location.href = /*[[ @{/board/list} ]]*/"";
+				}else if(document.referrer.includes("viewCount")) {
+					window.history.go(-2);
+				}else{
+					window.history.back();
+				}
+			}
+			
+			const writeBoard=()=>{
+				let groupIdx = /*[[ ${boardDTO.groupIdx} ]]*/"";
+				let groupOrder = /*[[ ${boardDTO.groupOrder} ]]*/"";
+				let groupDepth = /*[[ ${boardDTO.groupDepth} ]]*/"";
+				let saveIdx = /*[[ ${boardDTO.idx} ]]*/"";
+				let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+				let token = /*[[ ${_csrf.token} ]]*/"";
+				let uri = /*[[ @{/board/write} ]]*/"";
+				let form = $("<form></form>");
+				form.attr("action", uri);
+				form.attr("method", "post");
+				form.appendTo("body");
+				form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+				form.append("<input type='hidden' name='groupIdx' value="+groupIdx+" />");
+				form.append("<input type='hidden' name='groupOrder' value="+groupOrder+" />");
+				form.append("<input type='hidden' name='groupDepth' value="+groupDepth+" />");
+				form.append("<input type='hidden' name='saveIdx' value="+saveIdx+" />");
+				form.submit();
+			}
+			
+			const updateBoard=()=>{
+				let idx = /*[[ ${boardDTO.idx} ]]*/"";
+				let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+				let token = /*[[ ${_csrf.token} ]]*/"";
+				let uri = /*[[ @{/board/write} ]]*/"";
+				let form = $("<form></form>");
+				form.attr("action", uri);
+				form.attr("method", "post");
+				form.appendTo("body");
+				form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+				form.append("<input type='hidden' name='idx' value="+idx+" />");
+				form.submit();
+			}
+	
+			const deleteBoard=()=>{
+				let idx = /*[[ ${boardDTO.idx} ]]*/"";
+				if (confirm(idx + "번 게시글을 삭제할까요?")) {
+					let uri = /*[[ @{/board/delete} ]]*/"";
+					let headers = {};
+					headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+					headers["X-HTTP-Method-Override"] = "POST";
+					let boardIdx = "idx=" + idx;
+		
+					$.ajax({
+						url : uri,
+						type : "DELETE",
+						headers : headers,
+						data : boardIdx,
+						success : function(response) {
+							if(response){
+								alert("삭제를 성공하였습니다.");
+								location.href = /*[[ @{/board/list} ]]*/"";
+							}else{
+								alert("삭제를 실패하였습니다.");
+							}
+						},
+						error : function(request, status, error) {
+							console.log("code:" + request.status + "\n" + "message:"
+									+ request.responseText + "\n" + "error:" + error);
+							alert("에러가 발생하였습니다.");
+							location.reload();
+						}
+					});
+				}
+			}
+		</script>
+	</th:block>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>예약</title>
+		<style>
+			.btn.btn-success.btn-xs {
+				padding: 6px 10px 6px;
+				margin-right: 4px;
+			}
+			.btn.btn-danger.btn-xs {
+				padding: 6px 16px 6px;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="content">
+		<form id="form" class="form-horizontal" th:object="${reservationDTO}" onsubmit="return insertResevation()">
+			<input type="hidden" th:field="*{targetIdx}" />
+			<input type="hidden" th:field="*{targetType}" />
+			<input type="hidden" th:field="*{memberIdx}" />
+			<div class="form-group">
+				<label class="col-sm-2 control-label">예약처</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" style="background-color:white" th:value="*{title}" readonly />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for=peopleNumber class="col-sm-2 control-label">인원수</label>
+				<div class="col-sm-9">
+					<input type="number" class="form-control" id="peopleNumber" name="peopleNumber" value="1" min="1" max="10" />
+					<span id="valid_peopleNumber"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="inputDate" class="col-sm-2 control-label">날짜</label>
+				<div class="col-sm-9">
+					<input type="date" class="form-control" id="inputDate" name="inputDate" />
+					<span id="valid_inputDate"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="inputTime" class="col-sm-2 control-label">시간</label>
+				<div class="col-sm-9">
+					<input type="time" class="form-control" id="inputTime" name="inputTime" min="09:00:00" max="18:00:00" />
+					<span id="valid_inputTime"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="parking" class="col-sm-2 control-label">주차여부</label>
+				<div class="col-sm-9">
+					<input type="checkbox" id="parking" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">예약자</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" style="background-color:white" th:value="*{writer}" readonly />
+				</div>
+			</div>
+
+			<div id="btnDiv" class="text-center table-btn">
+				<input type="button" class="btn btn-default" onclick="window.history.back()" value="뒤로가기" />
+				<button type="submit" class="btn btn-primary">저장하기</button>
+			</div>
+		</form>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				let date = new Date();
+				date.setDate(date.getDate() + 1);
+				date = date.toISOString();
+				$("#inputDate").attr("min", date.substring(0, 10));
+			});
+			
+			const insertResevation=()=>{
+				$("#valid_peopleNumber").text("");
+				$("#valid_inputDate").text("");
+				$("#valid_inputTime").text("");
+				if (checkValidation()) {
+					return false;
+				}
+				let reservationDTO = $("#form").serializeArray();
+				reservationDTO.push({name:"parking", value:$("#parking").is(":checked") ? "Y" : "N"});
+				let uri = /*[[ @{/reservation/insert} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : reservationDTO,
+					success : function(response) {
+						if(response){
+							alert("예약을 성공하였습니다.");
+							let url = /*[[ @{/member/info?type=} + ${#strings.equals(reservationDTO.targetType, 'restaurant')?4:5}]]*/"";
+							location.href = url;
+						}else{
+							alert("예약을 실패하였습니다.");
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+				return false;
+			}
+	
+			const checkValidation=()=>{
+				let reservationDTO = $("#form").serialize();
+				let uri = /*[[ @{/reservation/checkValidation} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+
+				let value = false;
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					dataType : "json",
+					data : reservationDTO,
+					async : false,
+					success : function(response) {
+						for (let key in response) {
+							$("#" + key).text(response[key]);
+							value = true;
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+						//value = true;
+					}
+				});
+				
+				return value;
+			}
+		</script>
+	</th:block>
+</html>

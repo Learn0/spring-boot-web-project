@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>내 정보</title>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	</head>
+	<th:block layout:fragment="nav">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand active" th:href="@{/member/info?type=0}">계정변경</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=1}">장바구니</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=2}">레시피찜</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=3}">영화예매</a>
+				</div>
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=4}">맛집예약</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=5}">서울여행예약</a>
+				</div>
+			</div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="content">
+		<form id="form" th:object="${memberDTO}" th:action="@{/member/update}"
+			method="post" enctype="multipart/form-data" onsubmit="return checkConditions()">
+			<input type="hidden" th:field="*{idx}" />
+			<input type="hidden" th:field="*{photo}" />
+			<input type="hidden" name="updateCheck" value="" />
+			<div class="input-group col-sm-10">
+				<span class="input-group-addon">
+					<label style="margin:0px" for="email">
+						<i class="glyphicon glyphicon-envelope"></i>
+					</label>
+				</span>
+				<input type="text" class="form-control" id="email" style="background-color:#ffffff" th:field="*{email}" maxlength="30" placeholder="이메일을 입력해주세요." oninput="noSpaceForm(this)" readonly>
+			</div>
+			<div class="input-group col-sm-10 valid">
+				<span id="valid_email"></span>
+			</div>
+			
+			<div th:if="*{not #strings.isEmpty(password)}" class="input-group col-sm-10">
+				<span class="input-group-addon">
+					<label style="margin:0px" for="password">
+						<i class="glyphicon glyphicon-lock"></i>
+					</label>
+				</span>
+				<input type="password" class="form-control" id="password" name="password" maxlength="20" placeholder="변경하실 비밀번호를 입력해주세요." oninput="noSpaceForm(this)">
+				<input type="password" class="form-control" id="duplicatePassword" maxlength="20" placeholder="다시 한번 입력해주세요." oninput="noSpaceForm(this);passwordCheck(this)">
+			</div>
+			<div class="input-group col-sm-10 valid">
+				<span id="valid_password"></span>
+			</div>
+			
+			<div class="input-group col-sm-10">
+				<span class="input-group-addon">
+					<label style="margin:0px" for="nickname">
+						<i class="glyphicon glyphicon-user"></i>
+					</label>
+				</span>
+				<input type="text" class="form-control" id="nickname" th:field="*{nickname}" maxlength="10" placeholder="닉네임을 입력해주세요." oninput="noSpaceForm(this)">
+				<input type="date" class="form-control" id="birthday" th:field="*{birthday}" data-placeholder="생년월일 입력해주세요." required aria-required="true">
+			</div>
+			<div class="input-group col-sm-10 valid">
+				<span id="valid_nickname"></span>
+			</div>
+			<div class="input-group col-sm-10 valid">
+				<span id="valid_birthday"></span>
+			</div>
+			
+			<div class="input-group col-sm-10">
+				<span class="input-group-addon">
+					<label style="margin:0px" for="phoneNumber">
+						<i class="glyphicon glyphicon-earphone"></i>
+					</label>
+				</span>
+				<input type="text" style="text-align:center; width: calc(25% - 20px)" class="form-control phoneNumber" id="phoneNumber" name="phoneNumber" th:value="${phoneNumber[0]}" maxlength="3" placeholder="010" oninput="numberForm(this)">
+				<div style="float:left; text-align:center; font-size:30px; width:20px; color:white">-</div>
+				<input type="text" style="text-align:center; width: calc(37.5% - 10px)" class="form-control phoneNumber" name="phoneNumber" th:value="${phoneNumber[1]}" maxlength="4" placeholder="1234" oninput="numberForm(this)">
+				<div style="float:left; text-align:center; font-size:30px; width:20px; color:white">-</div>
+				<input type="text" style="text-align:center; width: calc(37.5% - 10px)" class="form-control phoneNumber" name="phoneNumber" th:value="${phoneNumber[2]}" maxlength="4" placeholder="56789" oninput="numberForm(this)">
+			</div>
+			<div class="input-group col-sm-10 valid">
+				<span id="valid_phoneNumber"></span>
+			</div>
+			
+			<div class="input-group col-sm-10" style="margin-top:30px; background-color:white; text-align:center">
+				<span class="input-group-addon">
+					<label style="margin:0px" for="find">
+						<i class="glyphicon glyphicon-open-file"></i>
+					</label>
+				</span>
+				<img th:if="*{not #strings.isEmpty(photo)}" th:src = "*{photo}" id="image" class="photo-circle" />
+				<img th:if="*{#strings.isEmpty(photo)}" th:src="@{/images/guest.png}" id="image" class="photo-circle" />
+				<div class="filebox">
+					<label for="file" class="btn btn-success btn-sm" style="margin:0px auto">등록</label>
+					<input type="file" accept="image/*" name="file" id="file" />
+				</div>
+			</div>
+			
+			<div style="margin-top:30px">
+				<div class="input-group col-sm-10">
+					<span class="input-group-addon">
+						<label style="margin:0px" for="find">
+							<i class="glyphicon glyphicon-home"></i>
+						</label>
+					</span>
+					<input type="text" class="form-control" style="width:calc(100% - 50px); min-width:270px; background-color:#ffffff" id="postcode" th:field="*{postcode}" placeholder="우편번호" readonly>
+					<input type="button" id="find" class="btn btn-success" style="padding-left:10px; padding-right:10px; width:50px; height:45px" onclick="execDaumPostcode()" value="찾기" />
+					<div id="wrap" style="display:none; border:1px solid;width:50%; min-width:320px; height:400px; margin:5px 0; position:relative">
+						<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer; position:absolute; right:0px; top:-1px; z-index:1; width:30px; height:30px" onclick="foldDaumPostcode()" alt="접기 버튼" />
+					</div>
+					<input type="text" class="form-control" style="width:100%; min-width:320px; background-color:#ffffff" id="address" th:field="*{address}" placeholder="주소" readonly>
+					<input type="text" class="form-control" style="width:50%" id="detailAddress" th:field="*{detailAddress}" maxlength="20" placeholder="상세주소">
+					<input type="text" class="form-control" style="width:50%" id="extraAddress" th:field="*{extraAddress}" maxlength="20" placeholder="참고항목">
+				</div>
+				<div class="input-group col-sm-10 valid">
+					<span id="valid_postcode"></span>
+				</div>
+			</div>
+			<div class="input-group col-sm-10 text-right" style="padding-top:30px">
+				<button type="submit" class="btn btn-primary">수정하기</button>
+			</div>
+		</form>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				$("#file")[0].addEventListener("change", imageLoad);
+				let date = new Date().toISOString();
+				$("#birthday").attr("min", (date.substring(0, 4)-100)+date.substring(4, 10));
+				$("#birthday").attr("max", date.substring(0, 10));
+			});
+
+			const imageLoad=(e)=>{
+				let file = e.target;
+				let preview = $(file.id.replace("file","#image"));
+				if(file.files.length > 0 && imageValidateType(file.files[0])){
+		    		preview.attr("src", URL.createObjectURL(file.files[0]));
+			    	preview[0].onload=function() {
+			        	URL.revokeObjectURL(preview.src); //URL 객체 해제
+			      	}
+			  	}else{
+					preview.attr("src", /*[[ @{/images/guest.png} ]]*/"");
+			    	console.log("이미지 파일이 아닙니다.");
+			  	}
+			}
+	
+			const checkConditions=()=>{
+				let check = true;
+				$("#valid_password").text("");
+				$("#valid_nickname").text("");
+				$("#valid_phoneNumber").text("");
+				$("#valid_postcode").text("");
+				if (checkValidation()) {
+					check = false;
+				}
+				if($("#duplicatePassword").val() != $("#password").val()){
+					$("#valid_password").text("비밀번호가 일치하지 않습니다.");
+					check = false;
+				}
+				
+				return check;
+			}
+	
+			const checkValidation=()=>{
+				let memberDTO = $("#form").serialize();
+				let uri = /*[[ @{/member/checkValidation} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+
+				let value = false;
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : memberDTO,
+					async : false,
+					success : function(response) {
+						for (let key in response) {
+							if(key != "valid_password" || $("#password") != null){
+								$("#" + key).text(response[key]);
+								value = true;
+							}
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+						//value = true;
+					}
+				});
+				
+				return value;
+			}
+	
+			const passwordCheck=(check)=>{
+				if($(check).val() === "" || $(check).val() === $("#password").val()){
+					$("#valid_password").text("");
+				}else{
+					$("#valid_password").text("비밀번호가 일치하지 않습니다.");
+				}
+			}
+			
+            $("#form input").keydown(function(key) {
+                if (key.keyCode === 13) {
+                	if(checkConditions()){
+                		$("#form").submit();
+                	}
+                }
+            });
+		</script>
+		<script th:src="@{/js/postcode.js}"></script>
+	</th:block>
+</html>

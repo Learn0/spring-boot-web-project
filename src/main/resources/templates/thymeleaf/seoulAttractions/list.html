@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>서울 명소</title>
+	</head>
+	<th:block layout:fragment="nav">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=0}">명소</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=1}">엔터테인먼트</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=2}">호텔</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=3}">관광</a>
+				</div>
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=4}">음식</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=5}">게스트 하우스</a>
+					<a class="navbar-brand" th:href="@{/seoulAttractions/list?type=6}">쇼핑</a>
+				</div>
+			</div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="content">
+		<div class="clearfix">
+			<h2 style="color:white" th:text="${title}"></h2>
+			<div th:if="${not #lists.isEmpty(attractionsList)}"
+				th:each="attractionsVO:${attractionsList}" th:object="${attractionsVO}" class="col-xs-4" style="margin-bottom:20px">
+				<div class="card" style="width:100%; cursor:pointer; background-color:white" th:onclick="location.href=[[ @{/seoulAttractions/view} + '?type=' + ${type} + '&idx=' + *{idx} ]]">
+					<div class="card-img">
+						<img th:if="*{#strings.contains(poster, '^')}" style="min-width:100%; height:100%; object-fit:cover" th:src="*{#strings.substring(poster, 0, #strings.indexOf(poster, '^'))}" th:onError="this.src=[[ @{/images/pic08.jpg} ]]">
+						<img th:unless="*{#strings.contains(poster, '^')}" style="min-width:100%; height:100%; object-fit:cover" th:src="*{poster}" th:onError="this.src=[[ @{/images/pic08.jpg} ]]">
+					</div>
+					<div>
+						<h4 style="margin:0px; padding:0px 10px; background-color:#efd"><b><span class="ellipsis" style="color:black; text-align:center" th:text="*{title}"></span></b></h4>
+						<p style="background-color:#eff"><span class="ellipsis-2" th:text="*{content}"></span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="page">
+		<nav th:if="${searchDTO != null and searchDTO.pageInfo.pageCount > 0}" th:object="${searchDTO.pageInfo}" class="text-center">
+			<ul class="pagination">
+				<li th:if="*{previousCheck}" onclick="movePage(1)">
+					<a href="javascript:void(0)"><span>&laquo;</span></a>
+				</li>
+				<li th:if="*{previousCheck}" th:onclick="movePage([[ *{(firstPage - 1)} ]])">
+					<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+				</li>
+				<li th:each="pageNo:*{#numbers.sequence( firstPage, lastPage )}" th:onclick="movePage([[ ${pageNo} ]])" th:class="${pageNo == searchDTO.page} ? 'active'">
+					<a href="javascript:void(0)" th:text="${pageNo}"></a>
+				</li>
+				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{(lastPage + 1)} ]])">
+					<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+				</li>
+				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{pageCount} ]])">
+					<a href="javascript:void(0)"><span>&raquo;</span></a>
+				</li>
+			</ul>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				$(".navbar-nav:nth-child("+parseInt(1 + ("[[ ${type} ]]" / 4))+") > a.navbar-brand:nth-child("+(1 + parseInt("[[ ${type} ]]" % 4))+")").addClass("active");
+			});
+	
+			const movePage=(page)=>{
+				let uri = /*[[ ${#request.requestURI} ]]*/"";
+				uri += "?page=" + page;
+				uri += "&type=[[ ${type} ]]";
+				location.replace(uri);
+			}
+		</script>
+	</th:block>
+</html>

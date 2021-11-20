@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>채팅</title>
+		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    	<style>
+    		#userList *,
+			#msgArea * {
+				color:white;
+			}
+			#msgArea .chat {
+				padding: 0px 10px;
+				border: 0.5px solid;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="content">
+		<!-- style="display:table" -->
+		<div>
+         	<h1 style="color:white">[[ ${room.title} ]]</h1>
+			<div class="col-xs-8" style="padding-left:0px">
+				<div>
+					<div>
+						<h4 style="color:white"><i style="font-size:15px; color:red" class="fa fa-circle text-green"></i> 실시간 채팅창</h4>
+					</div>
+					<div id="msgArea" style="overflow-y:auto; width: auto; height: 600px;">
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div>
+					<div>
+						<h4 style="color:white">접속 목록 (<span id="userCount"></span>/10)</h4>
+					</div>
+					<div id="userList" style="overflow-y:auto; width: auto; height: 600px;">
+						<div th:each="nickname:${nicknameList}">[[ ${nickname} ]]</div>
+					</div>
+				</div>
+			</div>
+				<div class="input-group">
+		            <input type="text" id="msg" class="form-control" maxlength="50">
+					<div class="input-group-btn">
+		            	<input type="button" class="btn btn-success" value="전송" onclick="msgSend()" />
+					</div>
+		        </div>
+		</div>
+		<div style="text-align:center; margin-top:30px">
+			<input type="button" class="btn btn-default" th:onclick="location.href=[[ @{/chat/list} ]]" value="뒤로가기" />
+		</div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			let stomp;
+			let roomId;
+			let nickname;
+			let scrollCheck = true;
+			let userCount = /*[[ ${#lists.size(nicknameList)} ]]*/"";
+	    	$(function(){
+				roomId = /*[[ ${room.roomId} ]]*/"";
+	            nickname = /*[[ ${session.nickname} ]]*/"";
+
+	            let sockJs = new SockJS("/stompChat");
+	            //1. SockJS를 내부에 들고있는 stomp를 내어줌
+	            stomp = Stomp.over(sockJs);
+	            
+	            //2. connection이 맺어지면 실행
+	            stomp.connect({}, function (){
+	               	//4. subscribe(path, callback)으로 메세지를 받을 수 있음
+	               	stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
+	                   	let content = JSON.parse(chat.body);
+	                   	let writer = content.nickname;
+	                   	let str;
+	                   	let today = new Date();
+	                   	console.log(content.system);
+	                   	if(content.system === "enter"){
+	                   		userCount += 1;
+	                   		$("#userCount").text(userCount);
+	                   		$("#userList").append("<div class='writer''>"+writer+"</div>");
+	                       	str = "<div class='chat' style='text-align:center'>";
+	                   	}else if(content.system === "exit"){
+	                   		userCount -= 1;
+	                   		$("#userCount").text(userCount);
+	                   		$(".writer").each(function(){
+	                   			if($(this).text() === writer){
+	                   				$(this).remove();
+	                   				return false;
+	                   			}
+	                   		});
+	                       	str = "<div class='chat' style='text-align:center'>";
+	                   	}else{
+	                   		if(writer === nickname){
+		                    	scrollCheck = true;
+		                      	str = "<div class='chat' style='text-align:right'>" + today.toLocaleTimeString() + "&nbsp;<b>" + writer + "</b><br>";
+		                   	}else{
+		                       	str = "<div class='chat'>" + "<b>" + writer + "</b>&nbsp;" + today.toLocaleTimeString() + "<br>";
+	                   		}
+		               	}
+                       	str += content.message + "</div>";
+                    	let scrollTop = $("#msgArea")[0].scrollHeight;
+                    	if(scrollTop === lastScrollTop){
+                    		scrollCheck = true;
+                    	}
+                       	$("#msgArea").append(str);
+        				if($(".chat").length >= 30){
+                    		$(".chat")[0].remove();
+        				}
+                       	if(scrollCheck){
+                           	$("#msgArea").scrollTop($("#msgArea")[0].scrollHeight);
+                       	}
+               		});
+	               
+               		//3. send(path, header, message)로 메세지를 보낼 수 있음
+	               	stomp.send('/pub/room/enter', {}, JSON.stringify({roomId: roomId, nickname: nickname}))
+	            });
+	        });
+	    	
+	    	let timeOutId;
+	    	let lastScrollTop = 0;
+	    	$("#msgArea").scroll(function(){
+	    		lastScrollTop = $("#msgArea").scrollTop() + $("#msgArea").height();
+	    		for (let i = 0; i < timeOutId; i++) {
+	     			clearTimeout(i);
+	       		}
+            	scrollCheck = false;
+	        	timeOutId = setTimeout(() => scrollCheck = true, 5000);
+	    	});
+
+            const msgSend=()=>{
+                let msg = $("#msg");
+                if(msg.val() === ""){
+                	msg.attr("placeholder", "내용을 입력해 주세요.");
+                	msg.focus();
+                	return;
+                }
+                stomp.send('/pub/room/chat', {}, JSON.stringify({roomId: roomId, message: msg.val(), nickname: nickname}));
+                msg.val("");
+            	msg.attr("placeholder", "");
+            }
+            
+            $("#msg").keydown(function(key) {
+                if (key.keyCode === 13) {
+                	msgSend();
+                }
+            });
+		</script>
+	</th:block>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>내 정보</title>
+		<style>
+			.table > thead > tr > th:first-child {
+				width: 60px;
+			}
+			.table > thead > tr > th:last-child {
+				width: 60px;
+			}
+			.table > tbody > tr {
+				cursor: pointer;
+				width: 300px;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="nav">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=0}">계정변경</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=1}">장바구니</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=2}">레시피찜</a>
+					<a class="navbar-brand active" th:href="@{/member/info?type=3}">영화예매</a>
+				</div>
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=4}">맛집예약</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=5}">서울여행예약</a>
+				</div>
+			</div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="content">
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+					<tr class="success">
+						<th>번호</th>
+						<th>영화명</th>
+						<th>영화관</th>
+						<th sec:authorize="hasRole('ROLE_ADMIN')" style="min-width:100px">예약자</th>
+						<th sec:authorize="hasRole('ROLE_ADMIN')">전화번호</th>
+						<th>예매일</th>
+						<th>인원수</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${not #lists.isEmpty(movieReservationList)}"
+						th:each="movieReservationVO:${movieReservationList}" th:object="${movieReservationVO}"
+						th:onclick="location.href=[[ @{/movie/main?view=} + *{movieIdx} ]]">
+						<td th:text="*{idx}"></td>
+						<td th:text="*{title}"></td>
+						<td th:text="*{movieTheater}"></td>
+						<td sec:authorize="hasRole('ROLE_ADMIN')" th:text="*{writer}"></td>
+						<td sec:authorize="hasRole('ROLE_ADMIN')" class="phoneNumber" th:text="*{phoneNumber}"></td>
+						<td th:text="*{#temporals.format(reservationTime, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="*{adultNumber + minorsNumber}+명"></td>
+					</tr>
+					<tr th:unless="${not #lists.isEmpty(movieReservationList)}">
+						<td colspan="100%">조회된 결과가 없습니다.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				$(".phoneNumber").each(function(){
+					$(this).text(phoneNumberCheck($(this).text()));
+				});
+			});
+		</script>
+	</th:block>
+</html>

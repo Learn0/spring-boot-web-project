@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>내 정보</title>
+		<style>
+		</style>
+	</head>
+	<th:block layout:fragment="nav">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=0}">계정변경</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=1}">장바구니</a>
+					<a class="navbar-brand active" th:href="@{/member/info?type=2}">레시피찜</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=3}">영화예매</a>
+				</div>
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=4}">맛집예약</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=5}">서울여행예약</a>
+				</div>
+			</div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="content">
+		<div class="clearfix" style="margin-top: 30px">
+			<div th:if="${not #lists.isEmpty(recipeList)}"
+				th:each="recipeVO:${recipeList}" th:object="${recipeVO}" class="col-xs-4" style="margin-bottom:20px">
+				<div class="card" style="width:100%; cursor:pointer; background-color:white" th:onclick="location.href=[[ @{/recipe/view?idx=} + *{idx} ]]">
+					<input type="button" style="position: absolute; left:calc(100% - 39px);z-index:1" th:onclick="deleteRecipe(this, [[ *{idx} ]])" value="X">
+					<div class="card-img">
+						<img th:src="*{#strings.arraySplit(poster, '^')[#strings.arraySplit(poster, '^').length - 1]}" th:onError="this.src=[[ @{/images/pic08.jpg} ]]">
+					</div>
+					<div>
+						<h4 style="margin:0px; padding:0px 10px; background-color:#def"><span class="ellipsis" style="color:black" th:utext="*{title}"></span></h4>
+						<b><span class="ellipsis" style="text-align:right; padding:0px 10px" th:text="*{writer}"></span></b>
+					</div>
+				</div>
+			</div>
+			<div id="recipeSave" style="color:white; font-size:35px; display:none">
+				찜한 레시피가 비어있습니다.
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				recipeReset();
+			})
+			
+			const recipeReset=()=>{
+				if($("div.col-xs-4").length > 0){
+					$("#recipeSave").css("display", "none");
+				}else{
+					$("#recipeSave").css("display", "inline");
+				}
+			}
+		
+			const deleteRecipe=(obj, recipeIdx)=>{
+				event.stopPropagation();
+
+				let uri = /*[[ @{/recipe/save} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+				let data = "recipeIdx=" + recipeIdx;
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : data,
+					success : function(response) {
+						if(!response){
+							$(obj).parents("div.col-xs-4").remove();
+							recipeReset();
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			}
+		</script>
+	</th:block>
+</html>

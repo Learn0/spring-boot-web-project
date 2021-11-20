@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>내 정보</title>
+		<style>
+			.card a {
+				cursor: default;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="nav">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=0}">계정변경</a>
+					<a class="navbar-brand active" th:href="@{/member/info?type=1}">장바구니</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=2}">레시피찜</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=3}">영화예매</a>
+				</div>
+				<div class="nav navbar-nav" style="margin:0px">
+					<a class="navbar-brand" th:href="@{/member/info?type=4}">맛집예약</a>
+					<a class="navbar-brand" th:href="@{/member/info?type=5}">서울여행예약</a>
+				</div>
+			</div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="content">
+		<div class="clearfix" style="margin-top: 30px">
+			<div th:if="${not #lists.isEmpty(shoppingBasketList)}"
+				th:each="shoppingBasketDTO:${shoppingBasketList}" th:object="${shoppingBasketDTO}" class="col-xs-4" style="margin-bottom:20px">
+				<div class="card" style="width:100%; cursor:pointer; background-color:white" th:onclick="window.open([[ *{itemLink} ]])">
+					<input type="button" style="position: absolute; left:calc(100% - 39px);z-index:1" th:onclick="deleteShoppingBasket(this, [[ *{idx} ]])" value="X">
+					<div class="card-img">
+						<img th:src="*{itemImage}">
+					</div>
+					<div>
+						<h4 style="margin:0px; background-color:#def"><span class="ellipsis-2" style="color:black" th:utext="*{itemName}"></span></h4>
+						<b><span class="ellipsis" style="text-align:right; padding-right:10px" th:value="*{itemPrice}" th:text="*{#numbers.formatInteger(itemPrice*itemNumber, 0, 'COMMA')}+원"></span></b>
+					</div>
+					<div>
+						<input type="button" class="btn-success" style="width:30%;float:left" th:onclick="shoppingBasketPlus(this, [[ *{idx} ]], -1)" value="-" />
+						<a href="javascript:void(0)" style="background-color:white;text-align:center;color:black;font-size:23px;width:40%;float:left" onclick="event.stopPropagation()" th:text="*{itemNumber}"></a>
+						<input type="button" class="btn-success" style="width:30%;float:left" th:onclick="shoppingBasketPlus(this, [[ *{idx} ]], 1)" value="+" />
+					</div>
+				</div>
+			</div>
+			<div id="basket" style="color:white; font-size:35px; display:none">
+				장바구니가 비어있습니다.
+			</div>
+		</div>
+		<div style="color:white; font-size:40px; padding-right:20px; border: solid 3px; text-align:right">
+			총 합계 : <span id="price" style="font-size:40px"></span>원
+		</div>
+		<div class="text-center table-btn">
+			<input type="button" class="btn btn-primary" onclick="buy()" value="구매하기" />
+		</div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			$(function(){
+				shoppingBasketReset();
+			})
+			
+			let price;
+			const buy=()=>{
+				if(price > 0){
+					alert("구매를 완료하였습니다.");
+				}else{
+					alert("장바구니에 물품이 없습니다.");
+				}
+			}
+		
+			const shoppingBasketReset=()=>{
+				let uri = /*[[ @{/shopping/searchBasket} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					dataType : "json",
+					success : function(response) {
+						// JSON.parse 대신 dataType : "json"을 사용
+						// response = JSON.parse(response);
+						price = 0;
+						$.each(response, function(index, key) {
+							price += (key["itemPrice"] * key["itemNumber"]);
+						});
+						if(price > 0){
+							$("#basket").css("display", "none");
+						}else{
+							$("#basket").css("display", "inline");
+						}
+						$("#price").text(price.toLocaleString());
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			}
+		
+			const shoppingBasketPlus=(obj, idx, number)=>{
+				event.stopPropagation();
+				
+				let uri = /*[[ @{/shopping/updateBasket} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+				let data = {
+						"idx" : idx,
+						"itemNumber" : number
+					};
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : data,
+					success : function(response) {
+						if(response != 0){
+							$(obj).siblings("a").text(response);
+							let price = $(obj).parent().prev().children("b").children("span");
+							price.text((response*price.attr("value")).toLocaleString()+"원");
+							shoppingBasketReset();
+						}else{
+							alert("변경을 실패하였습니다.");
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			}
+		
+			const deleteShoppingBasket=(obj, idx)=>{
+				event.stopPropagation();
+
+				let uri = /*[[ @{/shopping/deleteBasket} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+				let data = "idx=" + idx;
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : data,
+					success : function(response) {
+						if(response){
+							$(obj).parents("div.col-xs-4").remove();
+							shoppingBasketReset();
+						}else{
+							alert("삭제를 실패하였습니다.");
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			}
+		</script>
+	</th:block>
+</html>

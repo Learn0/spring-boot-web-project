@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		-->
+		<meta name="viewport" content="width=600, user-scalable=yes">
+		
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap">
+		<link rel="stylesheet" th:href="@{/plugin/jquery-ui-1.12.0/jquery-ui.min.css}" />
+		<link rel="stylesheet" th:href="@{/plugin/assets/css/main.css}" />
+		<link rel="stylesheet" th:href="@{/plugin/bootstrap/css/bootstrap.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/basic.css}" />
+		
+		<script th:src="@{/js/jquery.min.js}"></script>
+		<script th:src="@{/plugin/jquery-ui-1.12.0/jquery-ui.min.js}"></script>
+		<script th:src="@{/plugin/assets/js/jquery.scrolly.min.js}"></script>
+		<script th:src="@{/plugin/assets/js/jquery.scrollex.min.js}"></script>
+		<script th:src="@{/plugin/assets/js/browser.min.js}"></script>
+		<script th:src="@{/plugin/assets/js/breakpoints.min.js}"></script>
+		<script th:src="@{/plugin/assets/js/util.js}"></script>
+		<script th:src="@{/plugin/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/basic.js}"></script>
+		<script th:inline="javascript">
+			const contextRoot = /*[[ ${#request.contextPath} ]]*/"";
+
+			const logout=()=>{
+				if (confirm("로그아웃하시겠습니까?")) {
+					let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+					let token = /*[[ ${_csrf.token} ]]*/"";
+					let uri = /*[[ @{/member/logout} ]]*/"";
+					let form = $("<form></form>");
+					form.attr("action", uri);
+					form.attr("method", "post");
+					form.appendTo("body");
+					form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+					form.submit();
+				}
+			}
+			
+			const deleteMember=()=>{
+				if (confirm("정말로 탈퇴하시겠습니까?")) {
+					let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+					let token = /*[[ ${_csrf.token} ]]*/"";
+					let uri = /*[[ @{/member/delete} ]]*/"";
+					let form = $("<form></form>");
+					form.attr("action", uri);
+					form.attr("method", "post");
+					form.appendTo("body");
+					form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+					form.append("<input type='hidden' name='_method' value='DELETE' />");
+					form.submit();
+				}
+			}
+			
+			const downloadData=(uri)=>{
+				let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+				let token = /*[[ ${_csrf.token} ]]*/"";
+				let form = $("<form></form>");
+				form.attr("action", contextRoot + uri);
+				form.attr("method", "post");
+				form.appendTo("body");
+				form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+				form.submit();
+			}
+		</script>
+	</head>
+	<body th:replace="thymeleaf/layout/body :: basicBody">
+	</body>
+</html>

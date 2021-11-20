@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>게시판 입력</title>
+		<style>
+			.btn.btn-success.btn-xs {
+				padding: 6px 10px 6px;
+				margin-right: 4px;
+			}
+			.btn.btn-danger.btn-xs {
+				padding: 6px 16px 6px;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="content">
+		<form id="form" class="form-horizontal" th:object="${boardDTO}">
+			<input type="hidden" th:if="*{idx > 0}" th:field="*{idx}" />
+			<input type="hidden" th:if="*{groupIdx > 0}" th:field="*{groupIdx}" />
+			<input type="hidden" th:if="*{groupIdx > 0}" th:field="*{groupOrder}" />
+			<input type="hidden" th:if="*{groupIdx > 0}" th:field="*{groupDepth}" />
+			<input type="hidden" th:field="*{changeCheck}" value="N" />
+			<input type="hidden" th:field="*{memberIdx}" />
+
+			<div th:if="${admin != null and boardDTO.groupIdx == null}" class="form-group">
+				<div style="margin-top: 10px">
+					<select name="noticeCheck" style="font-size:25px">
+						<option value="N">일반 게시판</option>
+						<option value="Y">공지 게시판</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="title" class="control-label">제목</label>
+				<div>
+					<input type="text" class="form-control" id="title" th:field="*{title}" maxlength="30" placeholder="제목을 입력해 주세요." />
+					<span id="valid_title"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="content" class="control-label">내용</label>
+				<div>
+					<textarea class="form-control" id="content" th:field="*{content}" maxlength="300" placeholder="내용을 입력해 주세요."></textarea>
+					<span id="valid_content"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="password" class="control-label">비밀번호</label>
+				<div>
+					<input type="password" class="form-control" id="password" name="password" th:value="*{password}" maxlength="20" placeholder="비공개 하실 경우 비밀번호를 입력해 주세요." oninput="noSpaceForm(this)" />
+					<span id="valid_password"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label">작성자</label>
+				<div>
+					<input type="text" class="form-control" style="background-color:white" th:value="*{writer}" readonly />
+				</div>
+			</div>
+
+			<div th:if="${#lists.isEmpty(fileList)}"
+				class="form-group" style="margin-bottom:0px">
+				<div class="filebox">
+					<input type="text" class="upload-name" style="float:left" value="파일 찾기" readonly />
+					<input type="file" accept="image/*" name="files" id="file_0" onchange="changeFileName(this)" />
+					<span class="input-group" style="margin-left:5px; float:left">
+						<label for="file_0" class="btn btn-success btn-xs">찾기</label>
+						<input type="button" class="btn btn-danger btn-xs" style="display:none" onclick="removeFile(this)" value="삭제" />
+					</span>
+					<div style="clear:both">
+						<img src="" id="image_0" />
+					</div>
+				</div>
+			</div>
+
+			<div th:unless="${#lists.isEmpty(fileList)}">
+				<div th:each="fileDTO,index:${fileList}" data-name="fileCheck"
+					class="form-group" style="margin-bottom:0px">
+					<div class="filebox">
+						<input type="hidden" name="fileIdxs" th:value="${fileDTO.idx}" />
+						<input type="text" class="upload-name" style="float:left" th:value="${fileDTO.originalName}" readonly />
+						<input type="file" accept="image/*" name="files" th:id="|file_${index.index}|" onchange="changeFileName(this)" />
+						<span class="input-group" style="margin-left:5px; float:left">
+							<label th:for="|file_${index.index}|" class="btn btn-success btn-xs">찾기</label>
+							<input type="button" class="btn btn-danger btn-xs" onclick="removeFile(this)" value="삭제" />
+						</span>
+						<br>
+						<img th:if="${#strings.contains(fileDTO.saveFile, '.png') 
+						or #strings.contains(fileDTO.saveFile, '.gif') 
+						or #strings.contains(fileDTO.saveFile, '.jp')}" 
+						th:src="${#strings.substring(fileDTO.saveFile, #strings.indexOf(fileDTO.saveFile, 'upload')-1)}" th:id="|image_${index.index}|" />
+						<img th:unless="${#strings.contains(fileDTO.saveFile, '.png') 
+						or #strings.contains(fileDTO.saveFile, '.gif') 
+						or #strings.contains(fileDTO.saveFile, '.jp')}" 
+						src="" th:id="|image_${index.index}|" />
+					</div>
+				</div>
+
+				<div th:if="${#lists.size(fileList) < 3}"
+					class="form-group" style="margin-bottom:0px">
+					<div class="filebox">
+						<input type="text" class="upload-name" style="float:left" value="파일 찾기" readonly />
+						<input type="file" accept="image/*" name="files" th:id="|file_${#lists.size(fileList)}|" onchange="changeFileName(this)" />
+						<span class="input-group" style="margin-left:5px; float:left">
+							<label th:for="|file_${#lists.size(fileList)}|" class="btn btn-success btn-xs">찾기</label>
+							<input type="button" class="btn btn-danger btn-xs" style="display:none" onclick="removeFile(this)" value="삭제" />
+						</span>
+						<div style="clear:both">
+							<img src="" th:id="|image_${#lists.size(fileList)}|" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div id="btnDiv" class="text-center table-btn">
+			<input type="button" class="btn btn-default" onclick="backwardBoard()" value="뒤로가기" />
+			<input type="button" class="btn btn-primary" onclick="insertBoard()" value="저장하기" />
+		</div>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			let fileIdx;
+			$(function(){
+				const fileList = /*[[ ${fileList} ]]*/"";
+				fileIdx = (fileList != null) ? fileList.length : 0;
+		
+				/*if(fileIdx > 0){
+					for(let i = 0; i < fileIdx; i++){
+						$("#file_"+i)[0].addEventListener("change", imageLoad);
+					}
+				}else{
+					$("#file_0")[0].addEventListener("change", imageLoad);
+				}*/
+			    $("input[name='files']").each(function() {
+					$(this).change(imageLoad);
+			    });
+			});
+	
+			const backwardBoard=()=>{
+				let idx = /*[[ ${boardDTO.idx} ]]*/"";
+				if (idx == null) {
+					idx = /*[[ ${saveIdx} ]]*/"";
+					if(idx == null){
+						window.history.back();
+						return;
+					}
+				}
+				let parameterName = /*[[ ${_csrf.parameterName} ]]*/"";
+				let token = /*[[ ${_csrf.token} ]]*/"";
+				let uri = /*[[ @{/board/view} ]]*/"";
+				let form = $("<form></form>");
+				form.attr("action", uri);
+				//form.attr("method", "post");
+				form.appendTo("body");
+				form.append("<input type='hidden' name="+parameterName+" value="+token+" />");
+				form.append("<input type='hidden' name='idx' value="+idx+" />");
+				form.append("<input type='hidden' name='pass' value=true />");
+				form.submit();
+			}
+			
+			const insertBoard=()=>{
+				$("#valid_title").text("");
+				$("#valid_content").text("");
+				$("#valid_password").text("");
+				if (checkValidation()) {
+					return;
+				}
+				let boardDTO = new FormData($("#form")[0]);
+				let uri = /*[[ @{/board/insert} ]]*/"";
+				let headers = {};
+				headers["X-HTTP-Method-Override"] = "POST";
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					enctype: "multipart/form-data",
+					headers : headers,
+					data : boardDTO,
+					contentType : false,
+			        processData : false,
+					success : function(response) {
+						if(/*[[ ${boardDTO.idx} ]]*/"" != null){
+							if(response){
+								alert("수정을 성공하였습니다.");
+								backwardBoard();
+							}else{
+								alert("수정을 실패하였습니다.");
+							}
+						}else{
+							if(response){
+								alert("등록을 성공하였습니다.");
+								location.href = /*[[ @{/board/list} ]]*/"";
+							}else{
+								alert("등록을 실패하였습니다.");
+							}
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			}
+			
+			const addFile=()=>{
+				const files = $('input[name="files"]');
+				if (files.length > 2) {
+					return;
+				}
+				fileIdx += 1;
+				const fileHtml = `
+					<div class="form-group" style="margin-bottom:0px">
+						<div class="filebox">
+							<input type="text" class="upload-name" style="float:left" value="파일 찾기" readonly />
+							<input type="file" accept="image/*" name="files" id="file_${fileIdx}" onchange="changeFileName(this)" />			
+							<span class="input-group" style="margin-left:5px; float:left">
+								<label for="file_${fileIdx}" class="btn btn-success btn-xs">찾기</label>
+								<input type="button" class="btn btn-danger btn-xs" style="display:none" onclick="removeFile(this)" value="삭제" />
+							</span>
+							<div style="clear:both">
+								<img src="" id="image_${fileIdx}" />
+							</div>
+						</div>
+					</div>
+				`;
+				$("form").append(fileHtml);
+	
+				$("#file_"+fileIdx).change(imageLoad);
+			}
+			
+			const removeFile=(btn)=>{
+				const files = $('input[name="files"]');
+				const fileChecks = $("div[data-name='fileCheck']");
+				$("#changeCheck").val("Y");
+				//const fileName = $(btn).parent().prevAll('input[type="text"]');
+				const fileCheck = $(btn).parents('div[data-name="fileCheck"]');
+				const file = $(btn).parent().prevAll('input[type="file"]');
+				if(file.val() != "" || fileCheck.attr("data_name") != "") {
+					fileCheck.remove()
+					if (files.length === fileChecks.length) {
+						addFile();
+					}
+				}
+			}
+	
+			const changeFileName=(file)=>{
+				$("#changeCheck").val("Y");
+				const target = $(file).prevAll(".upload-name");
+				if(file.files.length === 0){
+					removeFile($(file).next().children("button"));
+				}else{
+					$(file).next("span").children("input").css("display", "inline")
+					$(file).parent().parent().attr("data-name", "fileCheck");
+					if($('input[name="files"]').length === $("div[data-name='fileCheck']").length){
+						addFile();
+					}
+					const fileName = file.files[0].name;
+					target.val(fileName);
+					
+					$(file).prevAll('input[name="fileIdxs"]').remove();
+				}
+			}
+			
+			const imageLoad=(e)=>{
+				let file = e.target;
+				let preview = $(file.id.replace("file","#image"));
+				if(file.files.length > 0 && imageValidateType(file.files[0])){
+		    		preview.attr("src", URL.createObjectURL(file.files[0]));
+			    	preview[0].onload=function() {
+			        	URL.revokeObjectURL(preview.src); //URL 객체 해제
+			      	}
+			  	}else{
+					preview.src = "";
+			    	console.log("이미지 파일이 아닙니다.");
+			  	}
+			}
+	
+			const checkValidation=()=>{
+				let boardDTO = $("#form").serialize();
+				let uri = /*[[ @{/board/checkValidation} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+
+				let value = false;
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					dataType : "json",
+					data : boardDTO,
+					async : false,
+					success : function(response) {
+						for (let key in response) {
+							$("#" + key).text(response[key]);
+							value = true;
+						}
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+						//value = true;
+					}
+				});
+				
+				return value;
+			}
+			
+            $("input").keydown(function(key) {
+                if (key.keyCode === 13) {
+                	insertBoard();
+                }
+            });
+		</script>
+	</th:block>
+</html>

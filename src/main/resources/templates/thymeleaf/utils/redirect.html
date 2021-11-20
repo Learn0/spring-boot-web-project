@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<title>Loading</title>	
+		<script th:src="@{/js/jquery.min.js}"></script>
+	</head>
+	<body>
+		<div th:if="${not #strings.isEmpty(redirectUri)}">
+			<form th:if="${#strings.equals(method, 'get') || #strings.equals(method, 'post')}" th:action="@{${redirectUri}}" th:method="${method}" style="display:none">
+				<input th:each="key:${params.keySet()}" type="hidden"
+					th:name="${key}" th:value="${params.get(key)}" />
+			</form>
+			<form th:unless="${#strings.equals(method, 'get') || #strings.equals(method, 'post')}" th:action="@{${redirectUri}}" method="post" style="display:none">
+				<input type="hidden" name="_method" th:value="${method}" />
+				<input th:each="key:${params.keySet()}" type="hidden"
+					th:name="${key}" th:value="${params.get(key)}" />
+			</form>
+		</div>
+		<form th:if="${#strings.isEmpty(redirectUri)}" th:action="@{/}" method="get" style="display:none">
+		</form>
+		<script th:inline="javascript">
+			$(function(){
+				let message = /*[[ ${message} ]]*/"";
+				if (message != null) {
+					alert(message);
+				}
+				$("form").submit();
+			});
+		</script>
+	</body>
+</html>

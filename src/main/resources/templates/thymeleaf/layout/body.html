@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<body th:fragment="basicBody" class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			<th:block layout:fragment="header">
+				<header id="header">
+					<a th:href="@{/}" class="logo"><img th:src="@{/images/logo.png}" alt="Logo" title="Our Shopping" style="height:30px" /></a>
+					<nav>
+						<a href="#menu">Menu</a>
+					</nav>
+				</header>
+			</th:block>
+			
+			<!-- Menu -->
+			<nav id="menu">
+				<div style="color:white; margin-bottom:30px">
+					<div>
+						<img th:if="${not #strings.isEmpty(session.photo)}" class="photo-circle" style="background-color: white" th:src="${session.photo}" />
+						<img th:if="${#strings.isEmpty(session.photo)}" class="photo-circle" style="background-color: white" th:src="@{/images/guest.png}" />
+					</div>
+					<a sec:authorize="isAuthenticated()"> email : <b
+						th:text=${session.email}></b><br>
+						<b th:text=${session.nickname}></b>님 안녕하세요.<br>
+						접속하신 ip는 <b th:text=${session.clientIp}></b>입니다.
+					</a>
+				</div>
+				<ul class="links">
+					<li><a th:href="@{/}" style="color:white" class="link primary">홈</a></li>
+					<li><a th:href="@{/restaurant/list}" style="color:white">맛집 찾기</a></li>
+					<li><a th:href="@{/recipe/list}" style="color:white">레시피 검색</a></li>
+					<li><a th:href="@{/board/list}" style="color:white">게시판</a></li>
+				</ul>
+				<ul sec:authorize="isAnonymous()" class="actions stacked">
+					<li>
+						<a th:href="@{/member/findPassword}" class="button asset fit">비밀번호 찾기</a>
+					</li>
+					<li>
+						<a th:href="@{/member/signup}" class="button asset fit">회원가입</a>
+					</li>
+					<li>
+						<a th:href="@{/member/login}" class="button asset primary fit">로그인</a>
+					</li>
+				</ul>
+				<ul sec:authorize="isAuthenticated()" class="actions stacked">
+					<li>
+						<a th:href="@{/member/info}" class="button asset fit">내 정보</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="deleteMember()" class="button asset fit">회원탈퇴</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="logout()" class="button asset primary fit">로그아웃</a>
+					</li>
+				</ul>
+			</nav>
+			
+			<th:block layout:fragment="nav"></th:block>
+		
+			<div id="mySidenav" class="sidenav">
+				<a href="javascript:void(0)" class="closebtn" onclick="changeNav()">&times;</a>
+				<!--<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/member/info}">관리자</a>-->
+				<!--<a sec:authorize="isAuthenticated()" th:href="@{/game/list}">미니게임</a>-->
+				<a th:href="@{/shopping/list}">쇼핑</a>
+				<a th:href="@{/movie/main}">상영영화</a>
+				<a th:href="@{/music/list}">뮤직 Top 200</a>
+				<a th:href="@{/seoulAttractions/list}">서울 명소</a>
+				<a th:href="@{/news/list}">실시간 뉴스</a>
+				<a th:href="@{/chat/list}">채팅</a>
+				<a th:href="@{/calendar/view}">달력</a>
+				<div sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">다운로드
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="javascript:void(0)" onclick="downloadData('/admin/music/download')">&nbsp; -실시간 음악 다운로드</a>
+						<li><a th:href="@{/admin/restaurant/search}">&nbsp; -맛집 다운로드</a>
+						<li><a href="javascript:void(0)" onclick="downloadData('/admin/movie/download')">&nbsp; -영화 다운로드</a>
+						<li><a href="javascript:void(0)" onclick="downloadData('/admin/recipe/download')">&nbsp; -레시피 다운로드</a>
+						<li><a href="javascript:void(0)" onclick="downloadData('/admin/attractions/download')">&nbsp; -서울 명소 다운로드</a>
+					</ul>
+				</div>
+			</div>
+			
+			<th:block layout:fragment="modal"></th:block>
+			
+			<th:block layout:fragment="banner"></th:block>
+		
+			<div id="main">
+				<div id="maxWidth">
+					<div class="col-xs-12">
+						<div class="box-content">
+							<div class="sidebtn" style="margin-bottom:20px">
+							  	<span style="font-size:30px;cursor:pointer" onclick="changeNav()">&#9776;</span>
+							</div>
+							<th:block layout:fragment="content"></th:block>
+						</div>
+						<th:block layout:fragment="comment"></th:block>
+					</div>
+				</div>
+				<th:block layout:fragment="sub"></th:block>
+			</div>
+			<th:block layout:fragment="contact"></th:block>
+			<footer id="footer">
+				<div class="inner">
+					<ul class="icons">
+						<!--<li><a href="#" class="icon brands alt fa-twitter"><span
+								class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon brands alt fa-facebook-f"><span
+								class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon brands alt fa-instagram"><span
+								class="label">Instagram</span></a></li>
+						<li><a href="#" class="icon brands alt fa-linkedin-in"><span
+								class="label">LinkedIn</span></a></li> -->
+						<li><a href="https://github.com/Learn0/webProject" class="icon brands alt fa-github"><span
+								class="label">GitHub</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>2021 &copy; ourshopping.shop.</li>
+						<li><a th:href="@{/personalInformation}">개인정보처리방침</a></li>
+						<li><a th:href="@{/serviceTerms}">서비스 약관</a></li>
+					</ul>
+				</div>
+			</footer>
+		</div>
+		<th:block layout:fragment="script"></th:block>
+		<script th:src="@{/plugin/assets/js/main.js}"></script>
+	</body>
+</html>

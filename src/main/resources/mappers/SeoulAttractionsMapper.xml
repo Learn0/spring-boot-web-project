@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.ourshopping.mapper.SeoulAttractionsMapper">
+	<update id="insertAttractions"
+		parameterType="SeoulAttractionsDTO">
+		CALL seoul_attractions_insert (
+		#{type},
+		#{title},
+		#{content},
+		#{score},
+		#{viewCount},
+		#{poster},
+		#{address},
+		#{phoneNumber},
+		#{businessTime},
+		#{businessWeek},
+		#{site},
+		#{tip}
+		)
+	</update>
+
+	<select id="selectAttractions" parameterType="int"
+		resultType="SeoulAttractionsDTO">
+		SELECT sa.idx, type, title, content, score, view_count,
+		poster, address, phone_number, business_time, business_week, site, tip
+		FROM seoul_attractions as sa join seoul_attractions_detail as
+		sa_detail
+		ON sa.idx = sa_detail.seoul_attractions_idx
+		WHERE sa.idx =
+		#{idx}
+	</select>
+
+	<select id="searchAttractions" parameterType="hashMap"
+		resultType="SeoulAttractionsDTO">
+		SELECT idx, title, content, poster
+		FROM seoul_attractions
+		WHERE type = #{type}
+		LIMIT #{min}, #{max}
+	</select>
+
+	<select id="searchAttractionsCount" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM seoul_attractions
+		WHERE type = #{type}
+	</select>
+</mapper>

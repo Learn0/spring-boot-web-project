@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{thymeleaf/layout/basic}">
+	<head>
+		<title>쇼핑</title>
+		<style>
+			.table > thead > tr > th:first-child {
+				width: 80px;
+			}
+			.table > tbody > tr > td > img {
+				min-width: 60px;
+				width: 60px;
+				height: 60px;
+			}
+			.table > tbody > tr {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<th:block layout:fragment="content">
+		<div class="input-group">
+			<input type="text" id="searchKeyword" class="form-control" th:value="${searchDTO.searchKeyword}" placeholder="키워드를 입력해 주세요." />
+			<div class="input-group-btn">
+				<div class="btn-group" style="height:100%; margin:0px; padding:0px">
+					<div class="dropdown dropdown-lg">
+						<button type="button" class="btn dropdown-toggle" style="height:45px" data-toggle="dropdown"><span class="caret"></span></button>
+						<div class="dropdown-menu dropdown-menu-right">
+							<form id="searchForm" th:action="@{/shopping/list}" th:object="${searchDTO}" method="get" class="form-horizontal">
+								<input type="hidden" name="page" value="1" />
+								<input type="hidden" name="searchKeyword" />
+								<div class="form-group" style="margin:10px">
+									<p style="color:black">검색 유형</p>
+									<select name="searchType" class="form-control">
+										<option value="sim" th:selected="*{#strings.isEmpty(searchType)}">정확도순</option>
+										<option value="date" th:selected="*{#strings.equals(searchType, 'date')}">날짜순</option>
+										<option value="asc" th:selected="*{#strings.equals(searchType, 'asc')}">가격 오름차순</option>
+										<option value="dsc" th:selected="*{#strings.equals(searchType, 'dsc')}">가격 내림차순</option>
+									</select>
+								</div>
+							</form>
+						</div>
+					</div>
+					<input type="button" class="btn btn-success" onclick="searchShopping()" value="검색" />
+				</div>
+			</div>
+		</div>
+		<div class="clearfix" style="margin-top: 30px">
+			<div th:if="${not #lists.isEmpty(shoppingList)}"
+				th:each="shoppingVO:${shoppingList}" th:object="${shoppingVO}" class="col-xs-4" style="margin-bottom:20px">
+				<div class="card" style="width:100%; cursor:pointer; background-color:white" th:onclick="window.open([[ *{link} ]])">
+					<div class="card-img">
+						<img th:src="*{image}">
+					</div>
+					<div>
+						<h4 style="margin:0px; background-color:#def"><span class="ellipsis-2" style="color:black" th:utext="*{title}"></span></h4>
+						<b><span class="ellipsis" style="text-align:right; padding-right:10px" th:text="*{#numbers.formatInteger(lprice, 0, 'COMMA')}+원"></span></b>
+						<input th:if="${session.memberIdx != null}" type="button" id="basket" class="btn btn-sm btn-success" style="width:100%" th:onclick="shoppingBasket(this, [[ ${shoppingVO} ]])" th:value="*{shoppingBasket}" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav th:if="${searchDTO != null and searchDTO.pageInfo.pageCount > 0}" th:object="${searchDTO.pageInfo}" class="text-center">
+			<ul class="pagination">
+				<li th:if="*{previousCheck}" onclick="movePage(1)">
+					<a href="javascript:void(0)"><span>&laquo;</span></a>
+				</li>
+				<li th:if="*{previousCheck}" th:onclick="movePage([[ *{(firstPage - 1)} ]])">
+					<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+				</li>
+				<li th:each="pageNo:*{#numbers.sequence( firstPage, lastPage )}" th:onclick="movePage([[ ${pageNo} ]])" th:class="${pageNo == searchDTO.page} ? 'active'">
+					<a href="javascript:void(0)" th:text="${pageNo}"></a>
+				</li>
+				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{(lastPage + 1)} ]])">
+					<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+				</li>
+				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{pageCount} ]])">
+					<a href="javascript:void(0)"><span>&raquo;</span></a>
+				</li>
+			</ul>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			const movePage=(page)=>{
+				let uri = /*[[ ${#request.requestURI} ]]*/"";
+				uri += "?page=" + page;
+				uri += "&searchKeyword=";
+				if(/*[[ ${searchDTO.searchKeyword} ]]*/"" != null){
+					uri += encodeURIComponent(/*[[ ${searchDTO.searchKeyword} ]]*/"");
+				}
+				uri += "&searchType=";
+				if(/*[[ ${searchDTO.searchType} ]]*/"" != null){
+					uri += encodeURIComponent(/*[[ ${searchDTO.searchType} ]]*/"");
+				}
+				location.replace(uri);
+			}
+	
+			const searchShopping=()=>{
+				let searchKeyword = $("#searchKeyword");
+				let form = $("#searchForm")[0];
+				form.searchKeyword.value = searchKeyword.val();
+				form.submit();
+			}
+			
+			const shoppingBasket=(obj, shoppingVO)=>{
+				event.stopPropagation();
+				
+				if(!/*[[ ${session.memberIdx} ]]*/""){
+					alert("로그인 후 가능합니다.");
+					return;
+				}
+				
+				let uri = /*[[ @{/shopping/basket} ]]*/"";
+				let headers = {};
+				headers["X-CSRF-TOKEN"] = /*[[ ${_csrf.token} ]]*/"";
+				headers["X-HTTP-Method-Override"] = "POST";
+				headers["Content-Type"] = "application/json";
+
+				$.ajax({
+					url : uri,
+					type : "POST",
+					headers : headers,
+					data : JSON.stringify(shoppingVO),
+					success : function(response) {
+						if(response){
+							alert("장바구니에 저장되었습니다.");
+						}else{
+							alert("취소하였습니다.");
+						}
+						shoppingBasketReset(obj, response);
+					},
+					error : function(request, status, error) {
+						console.log("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+						alert("에러가 발생하였습니다.");
+						location.reload();
+					}
+				});
+			}
+			
+			const shoppingBasketReset=(obj, saveCheck)=>{
+				if(saveCheck){
+					$(obj).val("장바구니 취소");
+				}else{
+					$(obj).val("장바구니 넣기");
+				}
+			}
+			
+            $("#searchKeyword").keydown(function(key) {
+                if (key.keyCode === 13) {
+                	searchShopping();
+                }
+            });
+		</script>
+	</th:block>
+</html>

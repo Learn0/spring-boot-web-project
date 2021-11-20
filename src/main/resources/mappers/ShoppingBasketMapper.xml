@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.ourshopping.mapper.ShoppingBasketMapper">
+	<sql id="selectAll">
+		idx,
+		item_name,
+		item_price,
+		item_link,
+		item_image,
+		item_number,
+		member_idx
+	</sql>
+
+	<insert id="insertShoppingBasket" useGeneratedKeys="true"
+		keyProperty="idx" parameterType="ShoppingBasketDTO">
+		INSERT INTO shopping_basket (
+		<include refid="selectAll" />
+		) VALUES (
+		NULL,
+		#{itemName},
+		#{itemPrice},
+		#{itemLink},
+		#{itemImage},
+		#{itemNumber},
+		#{memberIdx}
+		)
+	</insert>
+
+	<select id="shoppingBasketCheck" parameterType="hashMap"
+		resultType="int">
+		SELECT COUNT (*)
+		FROM shopping_basket
+		WHERE item_link = #{itemLink} AND member_idx = #{memberIdx}
+	</select>
+
+	<select id="searchShoppingBasket" parameterType="int"
+		resultType="ShoppingBasketDTO">
+		SELECT
+		<include refid="selectAll" />
+		FROM shopping_basket
+		WHERE member_idx = #{memberIdx}
+	</select>
+
+	<select id="selectShoppingBasket" parameterType="int"
+		resultType="ShoppingBasketDTO">
+		SELECT
+		<include refid="selectAll" />
+		FROM shopping_basket
+		WHERE idx = #{idx}
+	</select>
+
+	<update id="updateShoppingBasket" parameterType="hashMap">
+		<selectKey keyProperty="itemCount" resultType="int" order="BEFORE">
+			SELECT item_number FROM shopping_basket WHERE idx = #{idx}
+		</selectKey>
+		UPDATE shopping_basket
+		<choose>
+			<when test="(itemCount &lt; 10 and itemNumber &gt; 0) or (itemCount &gt; 1 and itemNumber &lt; 0)">
+				SET item_number = item_number+#{itemNumber}
+			</when>
+			<otherwise>
+				SET item_number = item_number
+			</otherwise>
+		</choose>
+		WHERE idx = #{idx}
+	</update>
+
+	<delete id="deleteShoppingBasket" parameterType="hashMap">
+		DELETE FROM shopping_basket
+		<if test="idx != null">
+			WHERE idx = #{idx}
+		</if>
+		<if test="idx == null">
+			WHERE item_link = #{itemLink} AND member_idx = #{memberIdx}
+		</if>
+	</delete>
+</mapper>
