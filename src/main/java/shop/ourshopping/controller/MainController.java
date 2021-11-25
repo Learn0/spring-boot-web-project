@@ -113,7 +113,7 @@ public class MainController extends BasicController {
 	}
 
 	@GetMapping("/serviceTerms")
-	public String servieTerms() {
+	public String serviceTerms() {
 
 		return "thymeleaf/utils/serviceTerms";
 	}

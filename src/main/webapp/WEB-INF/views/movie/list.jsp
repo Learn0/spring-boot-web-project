@@ -25,23 +25,23 @@
 		<ul class="pagination">
 			<c:if test="${searchDTO.pageInfo.previousCheck}">
 				<li onclick="movePage(1)">
-					<a href="javascript:void(0)"><span>&laquo;</span></a>
+					<a href="#"><span>&laquo;</span></a>
 				</li>
 				<li onclick="movePage(${searchDTO.pageInfo.firstPage - 1})">
-					<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+					<a href="#"><span>&lsaquo;</span></a>
 				</li>
 			</c:if>
 			<c:forEach var="pageNo" begin="${searchDTO.pageInfo.firstPage}" end="${searchDTO.pageInfo.lastPage}">
 				<li onclick="movePage('${pageNo}')" class="${(pageNo eq searchDTO.page) ? 'active' : '' }">
-					<a href="javascript:void(0)">${pageNo}</a>
+					<a href="#">${pageNo}</a>
 				</li>
 			</c:forEach>
 			<c:if test="${searchDTO.pageInfo.nextCheck}">
 				<li onclick="movePage(${searchDTO.pageInfo.lastPage + 1})">
-					<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+					<a href="#"><span>&rsaquo;</span></a>
 				</li>
 				<li onclick="movePage(${searchDTO.pageInfo.pageCount})">
-					<a href="javascript:void(0)"><span>&raquo;</span></a>
+					<a href="#"><span>&raquo;</span></a>
 				</li>
 			</c:if>
 		</ul>
@@ -154,45 +154,42 @@
 		render() {
    			let html=[]
 			if(this.props.searchDTO.previousCheck){
-				console.log(1);
 				html.push(
 					<li key={1} onClick={()=>{this.changePage(1)}}>
-						<a href="javascript:void(0)"><span>&laquo;</span></a>
+						<a href="#none"><span>&laquo;</span></a>
 					</li>
 				)
 				html.push(
 					<li key={this.props.searchDTO.firstPage-1} onClick={()=>{this.changePage(this.props.searchDTO.firstPage-1)}}>
-						<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+						<a href="#none"><span>&lsaquo;</span></a>
 					</li>
 				)
 			}
     		for (let i = this.props.searchDTO.firstPage; i <= this.props.searchDTO.lastPage; i++) {
 				html.push(
 					<li key={i} onClick={()=>{this.changePage(i)}} className={ ((i == this.props.searchDTO.page) ? 'active' : '')}>
-						<a href="javascript:void(0)">{i}</a>
+						<a href="#none">{i}</a>
 					</li>
 				)
     		}
 			if(this.props.searchDTO.nextCheck){
 				html.push(
 					<li key={this.props.searchDTO.lastPage+1} onClick={()=>{this.changePage(this.props.searchDTO.lastPage+1)}}>
-						<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+						<a href="#none"><span>&rsaquo;</span></a>
 					</li>
 				)
 				html.push(
 					<li key={this.props.searchDTO.pageCount} onClick={()=>{this.changePage(this.props.searchDTO.pageCount)}}>
-						<a href="javascript:void(0)"><span>&raquo;</span></a>
+						<a href="#none"><span>&raquo;</span></a>
 					</li>
 				)
 			}
 			return (
-				<div>
-					<nav className={"text-center"}>
-						<ul className={"pagination"}>
-							{html}
-						</ul>
-					</nav>
-				</div>
+				<nav className={"text-center"}>
+					<ul className={"pagination"}>
+						{html}
+					</ul>
+				</nav>
 			)
 		}
         changePage(page)

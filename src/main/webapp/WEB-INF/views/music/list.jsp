@@ -38,7 +38,7 @@
 						<div class="sidebtn" style="margin-bottom:20px">
 						  	<span style="font-size:30px;cursor:pointer" onclick="changeNav()">&#9776;</span>
 						</div>
-						<input type="text" class="form-control" v-model="searchKeyword" v-on:keyup="searchMusic()" placeholder="노래를 검색하세요." />
+						<input type="text" class="form-control" v-model="searchDTO.searchKeyword" v-on:keyup="searchMusic()" placeholder="노래를 검색하세요." />
 						<div class="table-responsive">
 							<table class="table table-hover">
 								<thead>
@@ -51,7 +51,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr v-if="musicList.length > 0" v-for="musicDTO in musicList" v-on:click="viewMusic(musicDTO.youtubeKey)">
+									<tr v-if="musicList.length != 0" v-for="musicDTO in musicList" v-on:click="viewMusic(musicDTO.youtubeKey)">
 										<td class="rank">{{musicDTO.idx}}</td>
 										<td v-if="musicDTO.state == 'new'"><font style="color:green">new</font></td>
 										<td v-else-if="musicDTO.state == '유지'"><font style="color:gray">-</font></td>
@@ -62,28 +62,28 @@
 										<td class="singer">{{musicDTO.singer}}</td>
 										<td>{{musicDTO.album}}</td>
 									</tr>
-									<tr v-else>
+									<tr v-if="musicList.length == 0">
 										<td colspan="100%">조회된 결과가 없습니다.</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
-						<nav v-if="pageCount > 0" class="text-center">
+						<nav v-if="searchDTO.pageCount > 0" class="text-center">
 							<ul class="pagination">
-								<li v-if="previousCheck" v-on:click="movePage(1)">
-									<a href="javascript:void(0)"><span>&laquo;</span></a>
+								<li v-if="searchDTO.previousCheck" v-on:click="movePage(1)">
+									<a href="#none"><span>&laquo;</span></a>
 								</li>
-								<li v-if="previousCheck" v-on:click="movePage((firstPage - 1))">
-									<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+								<li v-if="searchDTO.previousCheck" v-on:click="movePage((searchDTO.firstPage - 1))">
+									<a href="#none"><span>&lsaquo;</span></a>
 								</li>
-								<li v-for="pageNo in (lastPage-firstPage+1)" v-on:click="movePage(firstPage+pageNo-1)" :class="[((firstPage+pageNo-1) == page) ? 'active' : '' ]">
-									<a href="javascript:void(0)">{{firstPage+pageNo-1}}</a>
+								<li v-for="pageNo in (searchDTO.lastPage-searchDTO.firstPage+1)" v-on:click="movePage(searchDTO.firstPage+pageNo-1)" :class="[((searchDTO.firstPage+pageNo-1) == searchDTO.page) ? 'active' : '' ]">
+									<a href="#none">{{searchDTO.firstPage+pageNo-1}}</a>
 								</li>
-								<li v-if="nextCheck" v-on:click="movePage((lastPage + 1))">
-									<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+								<li v-if="searchDTO.nextCheck" v-on:click="movePage((searchDTO.lastPage + 1))">
+									<a href="#none"><span>&rsaquo;</span></a>
 								</li>
-								<li v-if="nextCheck" v-on:click="movePage(pageCount)">
-									<a href="javascript:void(0)"><span>&raquo;</span></a>
+								<li v-if="searchDTO.nextCheck" v-on:click="movePage(searchDTO.pageCount)">
+									<a href="#none"><span>&raquo;</span></a>
 								</li>
 							</ul>
 						</nav>
@@ -116,7 +116,9 @@
 					v-on:mouseover="prev()"
 					v-on:change="prev()"
 					*/
-					musicList:{},
+					musicList:[],
+					searchDTO:{}
+					/*
 					searchKeyword:'',
 					pageCount:0,
 					previousCheck:false,
@@ -124,6 +126,7 @@
 					firstPage:0,
 					lastPage:0,
 					page:1
+					*/
 				},
 				beforeCreate:function(){
 					console.log("이벤트 등록 , 인스턴스 초기화 전");
@@ -155,18 +158,23 @@
 					searchMusic:function(){
 						axios.get(contextRoot + "/music/search", {
 							params:{
-								searchKeyword:this.searchKeyword,
-								page:this.page
+								searchKeyword:this.searchDTO.searchKeyword,
+								page:this.searchDTO.page
 							}
 						})
 						.then(response=>{
 							this.musicList=JSON.parse(response.data[0]);
+							console.log(response.data[1]);
+							this.searchDTO = response.data[1];
+							console.log(this.searchDTO.searchKeyword);
+							/*
 							this.pageCount = response.data[1].pageCount;
 							this.previousCheck = response.data[1].previousCheck;
 							this.nextCheck = response.data[1].nextCheck;
 							this.firstPage = response.data[1].firstPage;
 							this.lastPage = response.data[1].lastPage;
 							this.page = response.data[1].page;
+							*/
 						})
 						.catch((error)=>{
 							if (error.response) {
@@ -186,7 +194,7 @@
 						window.open(url);
 					},				
 					movePage:function(page){
-						this.page = page;
+						this.searchDTO.page = page;
 						this.searchMusic();
 					}
 				}

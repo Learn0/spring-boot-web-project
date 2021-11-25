@@ -22,7 +22,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer   
     public void registerStompEndpoints(StompEndpointRegistry registry) {
     	// 클라이언트에서 연결할 웹소켓
         registry.addEndpoint("/stompChat")
-				.setAllowedOrigins("http://localhost:8080", "https://ourshopping.shop")
+				.setAllowedOrigins("http://localhost", "http://localhost:8080", "https://ourshopping.shop")
                 // .setAllowedOrigins("http://localhost:8080")
                 .withSockJS();
     }

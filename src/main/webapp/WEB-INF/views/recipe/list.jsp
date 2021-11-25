@@ -97,23 +97,23 @@
 								<ul class="pagination">
 									<c:if test="${searchDTO.pageInfo.previousCheck}">
 										<li onclick="movePage(1)">
-											<a href="javascript:void(0)"><span>&laquo;</span></a>
+											<a href="#"><span>&laquo;</span></a>
 										</li>
 										<li onclick="movePage(${searchDTO.pageInfo.firstPage - 1})">
-											<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+											<a href="#"><span>&lsaquo;</span></a>
 										</li>
 									</c:if>
 									<c:forEach var="pageNo" begin="${searchDTO.pageInfo.firstPage}" end="${searchDTO.pageInfo.lastPage}">
 										<li onclick="movePage('${pageNo}')" class="${(pageNo eq searchDTO.page) ? 'active' : '' }">
-											<a href="javascript:void(0)">${pageNo}</a>
+											<a href="#">${pageNo}</a>
 										</li>
 									</c:forEach>
 									<c:if test="${searchDTO.pageInfo.nextCheck}">
 										<li onclick="movePage(${searchDTO.pageInfo.lastPage + 1})">
-											<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+											<a href="#"><span>&rsaquo;</span></a>
 										</li>
 										<li onclick="movePage(${searchDTO.pageInfo.pageCount})">
-											<a href="javascript:void(0)"><span>&raquo;</span></a>
+											<a href="#"><span>&raquo;</span></a>
 										</li>
 									</c:if>
 								</ul>

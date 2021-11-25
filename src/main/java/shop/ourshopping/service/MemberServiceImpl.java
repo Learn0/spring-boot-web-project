@@ -88,24 +88,34 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean update(MemberDTO memberDTO, MultipartFile file) {
+	public boolean update(MemberDTO memberDTO, MultipartFile file, boolean photoRemove) {
 		if(!file.getOriginalFilename().isEmpty()) {
 			if(!memberDTO.getPhoto().isEmpty()) {
 				osPath.deletePath(memberDTO.getPhoto());
 			}
 			memberDTO.setPhoto(fileUpload.uploadMemberImage(file));
+		}else if(photoRemove) {
+			if(!memberDTO.getPhoto().isEmpty()) {
+				osPath.deletePath(memberDTO.getPhoto());
+			}
+			memberDTO.setPhoto("");
 		}
 		
 		return (memberRepository.updateMember(memberDTO.toEntity()) > 0);
 	}
 
 	@Override
-	public boolean updateAll(MemberDTO memberDTO, MultipartFile file) {
+	public boolean updateAll(MemberDTO memberDTO, MultipartFile file, boolean photoRemove) {
 		if(!file.getOriginalFilename().isEmpty()) {
 			if(!memberDTO.getPhoto().isEmpty()) {
 				osPath.deletePath(memberDTO.getPhoto());
 			}
 			memberDTO.setPhoto(fileUpload.uploadMemberImage(file));
+		}else if(photoRemove) {
+			if(!memberDTO.getPhoto().isEmpty()) {
+				osPath.deletePath(memberDTO.getPhoto());
+			}
+			memberDTO.setPhoto("");
 		}
 		memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
 		

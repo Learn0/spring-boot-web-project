@@ -17,7 +17,6 @@ import shop.ourshopping.component.OSPath;
 import shop.ourshopping.dto.mybatis.BoardDTO;
 import shop.ourshopping.dto.mybatis.SearchDTO;
 import shop.ourshopping.mapper.BoardFileMapper;
-import shop.ourshopping.search.PageInfo;
 import shop.ourshopping.mapper.BoardMapper;
 
 // 게시판 관련 DB 비지니스 처리
@@ -123,9 +122,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardDTO> searchBoard(SearchDTO searchDTO) {
 		int count = boardMapper.searchBoardCount(searchDTO);
-		PageInfo pageInfo = new PageInfo(searchDTO);
-		pageInfo.resetPage(count);
-		searchDTO.setPageInfo(pageInfo);
+		searchDTO.setPage(searchDTO.getPageInfo().reset(count, searchDTO.getPage()));
 
 		return boardMapper.searchBoard(searchDTO);
 	}

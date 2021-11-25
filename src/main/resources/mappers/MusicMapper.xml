@@ -47,7 +47,7 @@
 		<include refid="selectAll" />
 		FROM music
 		<include refid="search" />
-		LIMIT #{pageInfo.firstRow}, #{rowCount}
+		LIMIT #{pageInfo.firstRow}, #{pageInfo.rowCount}
 	</select>
 
 	<select id="searchMusicCount" parameterType="SearchDTO"

@@ -3,7 +3,7 @@
     xmlns:sec="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<div class="box-content">
-		<div class="input-group" style="margin-bottom:20px">
+		<div class="input-group">
 			<input type="text" class="form-control" id="content" onKeyDown="event.keyCode === 13 ? insertComment() : ''" maxlength="50" />
 			<div class="input-group-btn">
 				<input type="button" class="btn btn-success" onclick="insertComment()" value="쓰기" />
@@ -175,7 +175,7 @@
 				}
 			}
 			if(depth >= 1){
-				commentHtml += `<span class="name" style="padding-right:24px"><a href="javascript:void(0)" onclick="viewScroll('${parent.idx+parent.writer}')" style="color:gray">to:${parent.writer}</a>${comment.writer}</span>
+				commentHtml += `<span class="name" style="padding-right:24px"><a href="#" onclick="viewScroll('${parent.idx+parent.writer}')" style="color:gray">to:${parent.writer}</a>${comment.writer}</span>
 				<span class="content" style="padding-left:24px">${comment.deleteCheck === "N" ? comment.content : "삭제된 댓글입니다."}</span>`;
 			}else{
 				commentHtml += `<span class="name" style="padding-right:70px">${comment.writer}</span>

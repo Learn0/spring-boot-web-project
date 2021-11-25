@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import shop.ourshopping.db.DBConnection;
 import shop.ourshopping.dto.mybatis.SearchDTO;
-import shop.ourshopping.search.PageInfo;
 import shop.ourshopping.vo.RestaurantVO;
 
 // 레스토랑과 관련된 sql제어
@@ -76,16 +75,14 @@ public class RestaurantDAO {
 			rs.close();
 			ps.close();
 
-			PageInfo pageInfo = new PageInfo(searchDTO);
-			pageInfo.resetPage(count);
-			searchDTO.setPageInfo(pageInfo);
+			searchDTO.setPage(searchDTO.getPageInfo().reset(count, searchDTO.getPage()));
 
 			sql = "CALL restaurant_list_select(?, ?, ?)";
 			db.setPs(conn.prepareStatement(sql));
 			ps = db.getPs();
 			ps.setString(1, searchDTO.getSearchKeyword());
-			ps.setInt(2, pageInfo.getFirstRow());
-			ps.setInt(3, searchDTO.getRowCount());
+			ps.setInt(2, searchDTO.getPageInfo().getFirstRow());
+			ps.setInt(3, searchDTO.getPageInfo().getRowCount());
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				RestaurantVO vo = new RestaurantVO();

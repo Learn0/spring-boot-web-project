@@ -41,10 +41,10 @@
 			<li>
 				<a href="<c:url value="/member/info" />" class="button asset fit">내 정보</a></li>
 			<li>
-				<a href="javascript:void(0)" onclick="deleteMember()" class="button asset fit">회원탈퇴</a>
+				<a href="#" onclick="deleteMember()" class="button asset fit">회원탈퇴</a>
 			</li>
 			<li>
-				<a href="javascript:void(0)" onclick="logout()" class="button asset primary fit">로그아웃</a>
+				<a href="#" onclick="logout()" class="button asset primary fit">로그아웃</a>
 			</li>
 		</sec:authorize>
 	</ul>

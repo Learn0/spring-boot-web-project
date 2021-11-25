@@ -74,7 +74,7 @@
 		SELECT idx, title, content 
 		FROM (SELECT idx, title, content, rownum as num 
 		FROM (SELECT /*+ INDEX_DESC(board pk_board_index) */ idx, title, content)
-		WHERE num BETWEEN #{pageInfo.firstRow} AND #{rowCount};
+		WHERE num BETWEEN #{pageInfo.firstRow} AND #{pageInfo.rowCount};
 		
 		rownum(오라클) = @ROWNUM:=@ROWNUM+1 as rownum(MariaDB @변수 사용)
 	-->
@@ -87,7 +87,7 @@
 		ON member_idx = member.idx
 		<include refid="search" />
 		ORDER BY notice_check ASC, group_idx DESC, group_order DESC, board.insert_time DESC
-		LIMIT #{pageInfo.firstRow}, #{rowCount}
+		LIMIT #{pageInfo.firstRow}, #{pageInfo.rowCount}
 	</select>
 
 	<select id="searchBoardCount" parameterType="SearchDTO"

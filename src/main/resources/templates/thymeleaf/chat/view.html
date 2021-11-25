@@ -26,7 +26,7 @@
 					<div>
 						<h4 style="color:white"><i style="font-size:15px; color:red" class="fa fa-circle text-green"></i> 실시간 채팅창</h4>
 					</div>
-					<div id="msgArea" style="overflow-y:auto; width: auto; height: 600px;">
+					<div id="msgArea" style="overflow-y:auto; width: auto; height: 400px;">
 					</div>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 					<div>
 						<h4 style="color:white">접속 목록 (<span id="userCount"></span>/10)</h4>
 					</div>
-					<div id="userList" style="overflow-y:auto; width: auto; height: 600px;">
+					<div id="userList" style="overflow-y:auto; width: auto; height: 400px;">
 						<div th:each="nickname:${nicknameList}">[[ ${nickname} ]]</div>
 					</div>
 				</div>
@@ -74,7 +74,6 @@
 	                   	let writer = content.nickname;
 	                   	let str;
 	                   	let today = new Date();
-	                   	console.log(content.system);
 	                   	if(content.system === "enter"){
 	                   		userCount += 1;
 	                   		$("#userCount").text(userCount);
@@ -92,7 +91,6 @@
 	                       	str = "<div class='chat' style='text-align:center'>";
 	                   	}else{
 	                   		if(writer === nickname){
-		                    	scrollCheck = true;
 		                      	str = "<div class='chat' style='text-align:right'>" + today.toLocaleTimeString() + "&nbsp;<b>" + writer + "</b><br>";
 		                   	}else{
 		                       	str = "<div class='chat'>" + "<b>" + writer + "</b>&nbsp;" + today.toLocaleTimeString() + "<br>";
@@ -100,7 +98,7 @@
 		               	}
                        	str += content.message + "</div>";
                     	let scrollTop = $("#msgArea")[0].scrollHeight;
-                    	if(scrollTop === lastScrollTop){
+                    	if((scrollTop-2) <= lastScrollTop){
                     		scrollCheck = true;
                     	}
                        	$("#msgArea").append(str);
@@ -135,6 +133,7 @@
                 	msg.focus();
                 	return;
                 }
+            	scrollCheck = true;
                 stomp.send('/pub/room/chat', {}, JSON.stringify({roomId: roomId, message: msg.val(), nickname: nickname}));
                 msg.val("");
             	msg.attr("placeholder", "");

@@ -42,7 +42,7 @@
 					</div>
 					<div>
 						<input type="button" class="btn-success" style="width:30%;float:left" th:onclick="shoppingBasketPlus(this, [[ *{idx} ]], -1)" value="-" />
-						<a href="javascript:void(0)" style="background-color:white;text-align:center;color:black;font-size:23px;width:40%;float:left" onclick="event.stopPropagation()" th:text="*{itemNumber}"></a>
+						<a href="#" style="background-color:white;text-align:center;color:black;font-size:23px;width:40%;float:left" onclick="event.stopPropagation()" th:text="*{itemNumber}"></a>
 						<input type="button" class="btn-success" style="width:30%;float:left" th:onclick="shoppingBasketPlus(this, [[ *{idx} ]], 1)" value="+" />
 					</div>
 				</div>

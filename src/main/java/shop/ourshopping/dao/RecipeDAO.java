@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import shop.ourshopping.db.DBConnection;
 import shop.ourshopping.dto.mybatis.SearchDTO;
-import shop.ourshopping.search.PageInfo;
 import shop.ourshopping.vo.RecipeVO;
 
 // 레시피와 관련된 sql제어
@@ -84,10 +83,7 @@ public class RecipeDAO {
 			cs.registerOutParameter(2, Types.INTEGER);
 			cs.executeUpdate();
 			int count = cs.getInt(2);
-
-			PageInfo pageInfo = new PageInfo(searchDTO);
-			pageInfo.resetPage(count);
-			searchDTO.setPageInfo(pageInfo);
+			searchDTO.setPage(searchDTO.getPageInfo().reset(count, searchDTO.getPage()));
 
 			/*
 			오라클일 경우
@@ -118,8 +114,8 @@ public class RecipeDAO {
 			db.setPs(conn.prepareStatement(sql));
 			ps = db.getPs();
 			ps.setString(1, searchDTO.getSearchKeyword());
-			ps.setInt(2, pageInfo.getFirstRow());
-			ps.setInt(3, searchDTO.getRowCount());
+			ps.setInt(2, searchDTO.getPageInfo().getFirstRow());
+			ps.setInt(3, searchDTO.getPageInfo().getRowCount());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				RecipeVO vo = new RecipeVO();

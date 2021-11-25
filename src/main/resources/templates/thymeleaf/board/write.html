@@ -6,7 +6,7 @@
 		<title>게시판 입력</title>
 		<style>
 			.btn.btn-success.btn-xs {
-				padding: 6px 10px 6px;
+				padding: 6px 16px 6px;
 				margin-right: 4px;
 			}
 			.btn.btn-danger.btn-xs {
@@ -35,7 +35,7 @@
 			<div class="form-group">
 				<label for="title" class="control-label">제목</label>
 				<div>
-					<input type="text" class="form-control" id="title" th:field="*{title}" maxlength="30" placeholder="제목을 입력해 주세요." />
+					<input type="text" class="form-control" style="width:80%" id="title" th:field="*{title}" maxlength="30" placeholder="제목을 입력해 주세요." />
 					<span id="valid_title"></span>
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 			<div class="form-group">
 				<label for="password" class="control-label">비밀번호</label>
 				<div>
-					<input type="password" class="form-control" id="password" name="password" th:value="*{password}" maxlength="20" placeholder="비공개 하실 경우 비밀번호를 입력해 주세요." oninput="noSpaceForm(this)" />
+					<input type="password" class="form-control" style="width:80%" id="password" name="password" th:value="*{password}" maxlength="20" placeholder="비공개 하실 경우 비밀번호를 입력해 주세요." oninput="noSpaceForm(this)" />
 					<span id="valid_password"></span>
 				</div>
 			</div>
@@ -59,12 +59,12 @@
 			<div class="form-group">
 				<label class="control-label">작성자</label>
 				<div>
-					<input type="text" class="form-control" style="background-color:white" th:value="*{writer}" readonly />
+					<input type="text" class="form-control" style="background-color:white; width:50%" th:value="*{writer}" readonly />
 				</div>
 			</div>
 
-			<div th:if="${#lists.isEmpty(fileList)}"
-				class="form-group" style="margin-bottom:0px">
+			<div th:if="${#lists.isEmpty(fileList)}" class="form-group">
+				<label class="control-label">파일</label>
 				<div class="filebox">
 					<input type="text" class="upload-name" style="float:left" value="파일 찾기" readonly />
 					<input type="file" accept="image/*" name="files" id="file_0" onchange="changeFileName(this)" />
@@ -79,6 +79,7 @@
 			</div>
 
 			<div th:unless="${#lists.isEmpty(fileList)}">
+				<label class="control-label">파일</label>
 				<div th:each="fileDTO,index:${fileList}" data-name="fileCheck"
 					class="form-group" style="margin-bottom:0px">
 					<div class="filebox">

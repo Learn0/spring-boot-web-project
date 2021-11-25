@@ -28,7 +28,6 @@ import shop.ourshopping.dto.mybatis.SearchDTO;
 import shop.ourshopping.dto.mybatis.ShoppingBasketDTO;
 import shop.ourshopping.manager.JsonManager;
 import shop.ourshopping.parsingVO.ShoppingVO;
-import shop.ourshopping.search.PageInfo;
 import shop.ourshopping.service.ShoppingBasketService;
 import shop.ourshopping.utils.RestAPIUtils;
 
@@ -71,13 +70,10 @@ public class ShoppingController {
 			String responseBody = RestAPIUtils.get(url, requestHeaders);
 
 			int count = jsonManager.shoppingCountJson(responseBody);
-
-			PageInfo pageInfo = new PageInfo(searchDTO);
-			pageInfo.resetPage(count);
-			searchDTO.setPageInfo(pageInfo);
+			searchDTO.setPage(searchDTO.getPageInfo().reset(count, searchDTO.getPage()));
 
 			url = "https://openapi.naver.com/v1/search/shop.json?&start" + (searchDTO.getPageInfo().getFirstRow() + 1)
-					+ "&display=" + searchDTO.getRowCount() + "&query=" + keyword + "&sort="
+					+ "&display=" + searchDTO.getPageInfo().getRowCount() + "&query=" + keyword + "&sort="
 					+ searchDTO.getSearchType();
 			responseBody = RestAPIUtils.get(url, requestHeaders);
 
@@ -93,9 +89,7 @@ public class ShoppingController {
 			}
 			model.addAttribute("shoppingList", shoppingList);
 		} else {
-			PageInfo pageInfo = new PageInfo(searchDTO);
-			pageInfo.resetPage(0);
-			searchDTO.setPageInfo(pageInfo);
+			searchDTO.setPage(searchDTO.getPageInfo().reset(0, searchDTO.getPage()));
 		}
 
 		return "thymeleaf/shopping/list";

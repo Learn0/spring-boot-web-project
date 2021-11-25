@@ -29,6 +29,7 @@
 			<input type="hidden" th:field="*{idx}" />
 			<input type="hidden" th:field="*{photo}" />
 			<input type="hidden" name="updateCheck" value="" />
+			<input type="hidden" id="photoRemove" name="photoRemove" value="false" />
 			<div class="input-group col-sm-10">
 				<span class="input-group-addon">
 					<label style="margin:0px" for="email">
@@ -138,11 +139,13 @@
 				let file = e.target;
 				let preview = $(file.id.replace("file","#image"));
 				if(file.files.length > 0 && imageValidateType(file.files[0])){
+			  		$("#photoRemove").val(false);
 		    		preview.attr("src", URL.createObjectURL(file.files[0]));
 			    	preview[0].onload=function() {
 			        	URL.revokeObjectURL(preview.src); //URL 객체 해제
 			      	}
 			  	}else{
+			  		$("#photoRemove").val(true);
 					preview.attr("src", /*[[ @{/images/guest.png} ]]*/"");
 			    	console.log("이미지 파일이 아닙니다.");
 			  	}

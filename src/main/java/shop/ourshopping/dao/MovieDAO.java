@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import shop.ourshopping.db.DBConnection;
 import shop.ourshopping.dto.mybatis.SearchDTO;
-import shop.ourshopping.search.PageInfo;
 import shop.ourshopping.vo.MovieVO;
 import shop.ourshopping.vo.MovieReservationVO;
 
@@ -105,15 +104,13 @@ public class MovieDAO {
 			rs.close();
 			ps.close();
 
-			PageInfo pageInfo = new PageInfo(searchDTO);
-			pageInfo.resetPage(count);
-			searchDTO.setPageInfo(pageInfo);
+			searchDTO.setPage(searchDTO.getPageInfo().reset(count, searchDTO.getPage()));
 
 			sql = "SELECT idx, title, poster, story, score " + "FROM movie " + "limit ?, ?";
 			db.setPs(conn.prepareStatement(sql));
 			ps = db.getPs();
-			ps.setInt(1, pageInfo.getFirstRow());
-			ps.setInt(2, searchDTO.getRowCount());
+			ps.setInt(1, searchDTO.getPageInfo().getFirstRow());
+			ps.setInt(2, searchDTO.getPageInfo().getRowCount());
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				MovieVO vo = new MovieVO();

@@ -21,7 +21,7 @@
 			<div class="form-group">
 				<label class="control-label">제목</label>
 				<div>
-					<input type="text" class="form-control" th:value = "*{title}" style="background-color:white" readonly />
+					<input type="text" class="form-control" th:value = "*{title}" style="background-color:white; width:80%" readonly />
 				</div>
 			</div>
 
@@ -35,31 +35,29 @@
 			<div class="form-group">
 				<label class="control-label">작성자</label>
 				<div>
-					<input type="text" class="form-control" th:value="*{writer}" style="background-color:white" readonly />
+					<input type="text" class="form-control" th:value="*{writer}" style="background-color:white; width:50%" readonly />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="control-label">날짜</label>
 				<div>
-					<input type="text" class="form-control" th:value = "*{#strings.equals(deleteCheck, 'N') ? updateTime != null ? '(수정) '+#temporals.format(updateTime, 'yyyy-MM-dd') : '(등록) '+#temporals.format(insertTime, 'yyyy-MM-dd') : '(삭제) '+#temporals.format(deleteTime, 'yyyy-MM-dd')}" style="background-color:white" readonly />
+					<input type="text" class="form-control" th:value = "*{#strings.equals(deleteCheck, 'N') ? updateTime != null ? '(수정) '+#temporals.format(updateTime, 'yyyy-MM-dd') : '(등록) '+#temporals.format(insertTime, 'yyyy-MM-dd') : '(삭제) '+#temporals.format(deleteTime, 'yyyy-MM-dd')}" style="background-color:white; width:30%" readonly />
 				</div>
 			</div>
 
 			<div th:if="${not #lists.isEmpty(fileList)}" class="form-group">
-				<div>
-					<div th:each="fileDTO:${fileList}">
-						<div class="form-control file_list">
-							<a th:href = "@{/board/download(idx=${fileDTO.idx})}">
-								<i class="glyphicon glyphicon-file"></i>
-								[[ ${fileDTO.originalName} ]]
-							</a>
-						</div>
-						<img th:if="${#strings.contains(fileDTO.saveFile, '.png') 
-						or #strings.contains(fileDTO.saveFile, '.gif') 
-						or #strings.contains(fileDTO.saveFile, '.jp')}" 
-						class="filebox" th:src = "${#strings.substring(fileDTO.saveFile, #strings.indexOf(fileDTO.saveFile, 'upload')-1)}" />
+				<label class="control-label">파일</label>
+				<div th:each="fileDTO:${fileList}" style="width:50%">
+					<div class="form-control file_list">
+						<a th:href = "@{/board/download(idx=${fileDTO.idx})}">
+							<span class="ellipsis"><i class="glyphicon glyphicon-file"></i>[[ ${fileDTO.originalName} ]]</span>
+						</a>
 					</div>
+					<img th:if="${#strings.contains(fileDTO.saveFile, '.png') 
+					or #strings.contains(fileDTO.saveFile, '.gif') 
+					or #strings.contains(fileDTO.saveFile, '.jp')}" 
+					class="filebox" th:src = "${#strings.substring(fileDTO.saveFile, #strings.indexOf(fileDTO.saveFile, 'upload')-1)}" />
 				</div>
 			</div>
 		</div>

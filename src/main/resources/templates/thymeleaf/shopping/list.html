@@ -63,19 +63,19 @@
 		<nav th:if="${searchDTO != null and searchDTO.pageInfo.pageCount > 0}" th:object="${searchDTO.pageInfo}" class="text-center">
 			<ul class="pagination">
 				<li th:if="*{previousCheck}" onclick="movePage(1)">
-					<a href="javascript:void(0)"><span>&laquo;</span></a>
+					<a href="#"><span>&laquo;</span></a>
 				</li>
 				<li th:if="*{previousCheck}" th:onclick="movePage([[ *{(firstPage - 1)} ]])">
-					<a href="javascript:void(0)"><span>&lsaquo;</span></a>
+					<a href="#"><span>&lsaquo;</span></a>
 				</li>
 				<li th:each="pageNo:*{#numbers.sequence( firstPage, lastPage )}" th:onclick="movePage([[ ${pageNo} ]])" th:class="${pageNo == searchDTO.page} ? 'active'">
-					<a href="javascript:void(0)" th:text="${pageNo}"></a>
+					<a href="#" th:text="${pageNo}"></a>
 				</li>
 				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{(lastPage + 1)} ]])">
-					<a href="javascript:void(0)"><span>&rsaquo;</span></a>
+					<a href="#"><span>&rsaquo;</span></a>
 				</li>
 				<li th:if="*{nextCheck}" th:onclick="movePage([[ *{pageCount} ]])">
-					<a href="javascript:void(0)"><span>&raquo;</span></a>
+					<a href="#"><span>&raquo;</span></a>
 				</li>
 			</ul>
 		</nav>

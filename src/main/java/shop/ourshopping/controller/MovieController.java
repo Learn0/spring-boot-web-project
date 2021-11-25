@@ -92,12 +92,12 @@ public class MovieController extends BasicController {
 		Gson gson = new Gson();
 		array.add(gson.toJson(movieList));
 		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("page", searchDTO.getPage());
 		jsonObject.addProperty("pageCount", searchDTO.getPageInfo().getPageCount());
 		jsonObject.addProperty("previousCheck", searchDTO.getPageInfo().isPreviousCheck());
 		jsonObject.addProperty("nextCheck", searchDTO.getPageInfo().isNextCheck());
 		jsonObject.addProperty("firstPage", searchDTO.getPageInfo().getFirstPage());
 		jsonObject.addProperty("lastPage", searchDTO.getPageInfo().getLastPage());
-		jsonObject.addProperty("page", searchDTO.getPage());
 		array.add(jsonObject);
 		
 		return array.toString();

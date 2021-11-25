@@ -49,10 +49,10 @@
 						<a th:href="@{/member/info}" class="button asset fit">내 정보</a>
 					</li>
 					<li>
-						<a href="javascript:void(0)" onclick="deleteMember()" class="button asset fit">회원탈퇴</a>
+						<a href="#" onclick="deleteMember()" class="button asset fit">회원탈퇴</a>
 					</li>
 					<li>
-						<a href="javascript:void(0)" onclick="logout()" class="button asset primary fit">로그아웃</a>
+						<a href="#" onclick="logout()" class="button asset primary fit">로그아웃</a>
 					</li>
 				</ul>
 			</nav>
@@ -60,13 +60,14 @@
 			<th:block layout:fragment="nav"></th:block>
 		
 			<div id="mySidenav" class="sidenav">
-				<a href="javascript:void(0)" class="closebtn" onclick="changeNav()">&times;</a>
+				<a href="#" class="closebtn" onclick="changeNav()">&times;</a>
 				<!--<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/member/info}">관리자</a>-->
 				<!--<a sec:authorize="isAuthenticated()" th:href="@{/game/list}">미니게임</a>-->
 				<a th:href="@{/shopping/list}">쇼핑</a>
 				<a th:href="@{/movie/main}">상영영화</a>
 				<a th:href="@{/music/list}">뮤직 Top 200</a>
 				<a th:href="@{/seoulAttractions/list}">서울 명소</a>
+				<a sec:authorize="isAuthenticated()" th:href="@{/games/DashAdventure}">게임</a>
 				<a th:href="@{/news/list}">실시간 뉴스</a>
 				<a th:href="@{/chat/list}">채팅</a>
 				<a th:href="@{/calendar/view}">달력</a>
@@ -75,11 +76,11 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="javascript:void(0)" onclick="downloadData('/admin/music/download')">&nbsp; -실시간 음악 다운로드</a>
+						<li><a href="#" onclick="downloadData('/admin/music/download')">&nbsp; -실시간 음악 다운로드</a>
 						<li><a th:href="@{/admin/restaurant/search}">&nbsp; -맛집 다운로드</a>
-						<li><a href="javascript:void(0)" onclick="downloadData('/admin/movie/download')">&nbsp; -영화 다운로드</a>
-						<li><a href="javascript:void(0)" onclick="downloadData('/admin/recipe/download')">&nbsp; -레시피 다운로드</a>
-						<li><a href="javascript:void(0)" onclick="downloadData('/admin/attractions/download')">&nbsp; -서울 명소 다운로드</a>
+						<li><a href="#" onclick="downloadData('/admin/movie/download')">&nbsp; -영화 다운로드</a>
+						<li><a href="#" onclick="downloadData('/admin/recipe/download')">&nbsp; -레시피 다운로드</a>
+						<li><a href="#" onclick="downloadData('/admin/attractions/download')">&nbsp; -서울 명소 다운로드</a>
 					</ul>
 				</div>
 			</div>

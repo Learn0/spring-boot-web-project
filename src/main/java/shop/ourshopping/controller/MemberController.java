@@ -199,14 +199,14 @@ public class MemberController extends BasicController {
 	}
 
 	@PostMapping("/update")
-	public String update(final MemberDTO memberDTO, final MultipartFile file, HttpSession session,
+	public String update(final MemberDTO memberDTO, @RequestParam(value = "photoRemove") Boolean photoRemove, final MultipartFile file, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		boolean check;
 		memberDTO.setPhoneNumber(memberDTO.getPhoneNumber().replace(",", ""));
 		if (memberDTO.getPassword().isEmpty()) {
-			check = memberService.update(memberDTO, file);
+			check = memberService.update(memberDTO, file, photoRemove);
 		} else {
-			check = memberService.updateAll(memberDTO, file);
+			check = memberService.updateAll(memberDTO, file, photoRemove);
 		}
 		if (check) {
 			session.setAttribute("nickname", memberDTO.getNickname());

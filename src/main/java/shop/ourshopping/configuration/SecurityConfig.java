@@ -75,8 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// swagger
 				.antMatchers("/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui/**", "/api-docs", "/api-docs/**")
 				.permitAll().antMatchers("/").permitAll().antMatchers("/message").permitAll()
-				.antMatchers("/serviceTerms").permitAll().antMatchers("/personalInformation").permitAll().anyRequest()
-				.authenticated().and()
+				// 약관
+				.antMatchers("/serviceTerms").permitAll().antMatchers("/personalInformation").permitAll()
+				.anyRequest().authenticated().and()
 				// 로그인(form 전송 name명은 username과 password로 맞춰야함)
 				.formLogin().loginPage("/member/login").loginProcessingUrl("/member/login_send")
 				.usernameParameter("email").successHandler(memberSuccessHandler).failureHandler(memberFailureHandler).and()
@@ -92,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// .csrf().disable()
 				// csrf, enctype="multipart/form-data" 동시처리가 불가하므로 아래에서 예외처리
 				.csrf().ignoringAntMatchers("/member/signup").ignoringAntMatchers("/member/update")
-				.ignoringAntMatchers("/board/insert").ignoringAntMatchers("/excel/upload").ignoringAntMatchers("/chat/test").and()
+				.ignoringAntMatchers("/board/insert").ignoringAntMatchers("/excel/upload").and()
 				// 중복 로그인 방지
 				.sessionManagement().maximumSessions(1)
 		        .maxSessionsPreventsLogin(false)

@@ -32,6 +32,7 @@ public class MusicController extends BasicController {
 		return "music/list";
 	}
 
+	// @CrossOrigin(value = "http://localhost:3000")
 	@GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String searchMusic(SearchDTO searchDTO) {
@@ -43,12 +44,13 @@ public class MusicController extends BasicController {
 		JsonArray array = new JsonArray();
 		array.add(gson.toJson(musicList));
 		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("page", searchDTO.getPage());
+		jsonObject.addProperty("searchKeyword", searchDTO.getSearchKeyword());
 		jsonObject.addProperty("pageCount", searchDTO.getPageInfo().getPageCount());
 		jsonObject.addProperty("previousCheck", searchDTO.getPageInfo().isPreviousCheck());
 		jsonObject.addProperty("nextCheck", searchDTO.getPageInfo().isNextCheck());
 		jsonObject.addProperty("firstPage", searchDTO.getPageInfo().getFirstPage());
 		jsonObject.addProperty("lastPage", searchDTO.getPageInfo().getLastPage());
-		jsonObject.addProperty("page", searchDTO.getPage());
 		array.add(jsonObject);
 		
 		return array.toString();

@@ -1,6 +1,6 @@
 # 공부용 웹사이트
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://ourshopping.shop)
-[웹사이트 바로가기](https://ourshopping.shop, "우리의 쇼핑")
+[웹사이트 바로가기](https://ourshopping.shop)
 
 [REST API 확인하기](http://ourshopping.shop/swagger-ui/index.html)
 
@@ -58,7 +58,7 @@
 | JSTL(EL) | JSP에서 <% %>대신 사용 |
 | Tiles | JSP에서 인클루드 대신 사용 |
 | VueJS | 음악 랭킹, 뉴스 |
-| ReactJS | 게임목록, 영화 목록 |
+| ReactJS | 게임목록, 영화목록 |
 | HikariCP | DBCP로 사용(DBCP라이브러리 중에서 성능이 좋고 안정적) |
 | JPA | 회원관리 부분 일부 사용 |
 | Jsoup | HTML 데이터 파싱으로 사용 |
@@ -74,8 +74,7 @@
 ## 개발 환경
 - Window10
 - Eclipse IDE
-- WebStorm
-- VSCode
+- WebStorm -> VSCode
 - OracleDB -> MariaDB
 - NodeJS
 
@@ -148,14 +147,52 @@
 > > -	Oracle VM VirtualBox 포트 포워딩 설정
 > > -	ufw allow 포트 설정
 > > -	방화벽 인바운드 새 규칙 설정
-> > -	sites-available에서 https 자동 이동 주석처리
-RewriteEngine on
-RewriteCond %{SERVER_NAME} =ourshopping.shop
-RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+> > -	sites-available에서 https 자동 이동하는 부분 주석처리
+
+	RewriteEngine on  
+	RewriteCond %{SERVER_NAME} =ourshopping.shop  
+	RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 > > -	sites-available에서 인증 URI는 톰캣으로 전송하지 않도록 설정
-SetEnvIf Request_URI "/.well-known/*" no-jk 추가
+
+	SetEnvIf Request_URI "/.well-known/*" no-jk
 > > -	/var/www/html/.well-known/acme-challenge 폴더 생성
 > > -	sudo apt update, sudo apt upgrade
+
+---
+
+> ### WebSocket을 사용하기 위한 설정
+> > -	sudo a2enmod proxy
+> > -	sudo a2enmod proxy_http
+> > -	sudo a2enmod proxy_wstunnel
+> > -	sudo vi /etc/apache2/sites-available/.conf에서 아래 코드 추가  
+
+	RewriteCond %{HTTP:Connection} Upgrade [NC]  
+	RewriteCond %{HTTP:Upgrade} websocket [NC]  
+	RewriteRule /(.*) ws://localhost:8080/$1 [P,L]
+> > -	sudo vi /etc/tomcat9/server.xml 아래 코드 추가(주석 해제)
+
+	<Connector port="8080" protocol="HTTP/1.1"  
+               connectionTimeout="20000"  
+               redirectPort="8443" />
+> > -	sudo systemctl restart apache2
+
+---
+
+> ### NodeJS를 연동하기 위한 설정
+> > -	NodeJS 설정
+
+	<Location /nodejs>  
+		ProxyPass http://localhost:3000  
+		ProxyPassReverse http://localhost:3000  
+	</Location>  
+	<Location /static>  
+		ProxyPass http://localhost:3000/static  
+		ProxyPassReverse http://localhost:3000/static  
+	</Location>
+> > -	NodeJS Websocket 설정
+
+	RewriteCond %{REQUEST_URI} =/sockjs-node  
+	RewriteRule  /(.*) ws://localhost:3000/$1 [P,L]
 
 ---
 

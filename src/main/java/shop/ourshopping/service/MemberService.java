@@ -11,8 +11,8 @@ public interface MemberService extends UserDetailsService {
 	public boolean signup(MemberDTO memberDTO, MultipartFile files);
 	public MemberEntity selectMemberEntity(int idx);
 	public MemberEntity selectMemberEntity(String email);
-	public boolean update(MemberDTO memberDTO, MultipartFile files);
-	public boolean updateAll(MemberDTO memberDTO, MultipartFile files);
+	public boolean update(MemberDTO memberDTO, MultipartFile file, boolean photoRemove);
+	public boolean updateAll(MemberDTO memberDTO, MultipartFile file, boolean photoRemove);
 	public boolean updatePassword(MemberDTO memberDTO);
 	public boolean delete(int idx);
 	public boolean checkEmailDuplicate(String email);

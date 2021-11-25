@@ -132,6 +132,10 @@ span.ellipsis-3 {
 	-webkit-box-orient: vertical
 }
 
+#header {
+	min-width: 600px;
+}
+
 #main {
 	transition: margin-right .5s;
 	padding-top: 15px;
@@ -500,7 +504,8 @@ span.ellipsis-3 {
 
 .filebox .upload-name {
 	display: inline-block;
-	width: calc(100% - 107px);
+	/*width: calc(100% - 113px);*/
+	width: 50%;
 	padding: 5px 5px;
 	font-size: 18px;
 	line-height: normal;

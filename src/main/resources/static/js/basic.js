@@ -88,8 +88,8 @@ const imageValidateType=function(img) {
 const getTimeStamp=function(date) {
 	let data = new Date(date);
 	let time =
-		leadingZeros(data.getFullYear().toString().substring(2,4), 2) + "." +
-		leadingZeros(data.getMonth() + 1, 2) + "." +
+		leadingZeros(data.getFullYear().toString().substring(2,4), 2) + "-" +
+		leadingZeros(data.getMonth() + 1, 2) + "-" +
 		leadingZeros(data.getDate(), 2) + " " +
 		
 		leadingZeros(data.getHours(), 2) + ":" +

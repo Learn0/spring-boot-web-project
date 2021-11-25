@@ -3,6 +3,7 @@ package shop.ourshopping.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,7 +18,16 @@ import shop.ourshopping.interceptor.LoggerInterceptor;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+	
+	// CORS 설정
+	@Override
+    public void addCorsMappings(CorsRegistry registry) {
+		// @CrossOrigin(value = "http://localhost:3000") 대신 사용
+		registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000","http://localhost:8080","https://ourshopping.shop");
 
+    }
+	
 	// 인터셉터에서 리소스 URL 제외
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
