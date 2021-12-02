@@ -173,7 +173,7 @@
 			}
 		}
 		if(depth >= 1){
-			commentHtml += `<span class="name" style="padding-right:24px"><a href="#" onclick="viewScroll('`+(parent.idx+parent.writer)+`')" style="color:gray">to:`+parent.writer+`</a> `+comment.writer+`</span>
+			commentHtml += `<span class="name" style="padding-right:24px"><a href="#none" onclick="viewScroll('`+(parent.idx+parent.writer)+`')" style="color:gray">to:`+parent.writer+`</a> `+comment.writer+`</span>
 			<span class="content" style="padding-left:24px">`+(comment.deleteCheck === "N" ? comment.content : "삭제된 댓글입니다.")+`</span>`;
 		}else{
 			commentHtml += `<span class="name" style="padding-right:70px">`+comment.writer+`</span>

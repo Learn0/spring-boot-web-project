@@ -29,7 +29,7 @@ import shop.ourshopping.dto.mybatis.ShoppingBasketDTO;
 import shop.ourshopping.manager.JsonManager;
 import shop.ourshopping.parsingVO.ShoppingVO;
 import shop.ourshopping.service.ShoppingBasketService;
-import shop.ourshopping.utils.RestAPIUtils;
+import shop.ourshopping.utils.RestAPIUtil;
 
 // 쇼핑과 관련된 url 매핑
 @PropertySource("classpath:/application-naver.properties")
@@ -67,7 +67,7 @@ public class ShoppingController {
 
 			String url = "https://openapi.naver.com/v1/search/shop.json?display=1&query=" + keyword + "&sort="
 					+ searchDTO.getSearchType();
-			String responseBody = RestAPIUtils.get(url, requestHeaders);
+			String responseBody = RestAPIUtil.get(url, requestHeaders);
 
 			int count = jsonManager.shoppingCountJson(responseBody);
 			searchDTO.setPage(searchDTO.getPageInfo().reset(count, searchDTO.getPage()));
@@ -75,7 +75,7 @@ public class ShoppingController {
 			url = "https://openapi.naver.com/v1/search/shop.json?&start" + (searchDTO.getPageInfo().getFirstRow() + 1)
 					+ "&display=" + searchDTO.getPageInfo().getRowCount() + "&query=" + keyword + "&sort="
 					+ searchDTO.getSearchType();
-			responseBody = RestAPIUtils.get(url, requestHeaders);
+			responseBody = RestAPIUtil.get(url, requestHeaders);
 
 			List<ShoppingVO> shoppingList = jsonManager.shoppingJson(responseBody);
 			if(session.getAttribute("memberIdx") != null) {

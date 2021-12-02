@@ -26,7 +26,7 @@ import shop.ourshopping.handler.MemberFailureHandler;
 import shop.ourshopping.handler.MemberLogoutHandler;
 import shop.ourshopping.handler.MemberSuccessHandler;
 import shop.ourshopping.service.MemberService;
-import shop.ourshopping.utils.EncryptionUtils;
+import shop.ourshopping.utils.EncryptionUtil;
 
 // 페이지 및 인증 권한 설정
 @Configuration
@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// 한글 인코딩
 		// http.addFilterBefore(new CharacterEncodingFilter(), CsrfFilter.class);
 
-		SecretKeySpec key = EncryptionUtils.createSecretKey("session".toCharArray());
+		SecretKeySpec key = EncryptionUtil.createSecretKey("session".toCharArray());
 		
 		// 권한
 		http.authorizeRequests()
@@ -108,7 +108,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 		        .and()
 				// 자동 로그인
-				.rememberMe().key(EncryptionUtils.decrypt("QCHwMh6Pq+dUrFC8XdkPVA==:7oS/T2ZytpkVARcS/7nW/Q==", key))
+				.rememberMe().key(EncryptionUtil.decrypt("QCHwMh6Pq+dUrFC8XdkPVA==:7oS/T2ZytpkVARcS/7nW/Q==", key))
 				.rememberMeParameter("auto").rememberMeCookieName("rememberLogin")
 				.authenticationSuccessHandler(memberSuccessHandler).tokenValiditySeconds(60 * 60 * 24 * 7).and()
 				// 소셜 로그인

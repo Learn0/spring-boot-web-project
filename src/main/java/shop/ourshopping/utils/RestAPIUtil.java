@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Map;
 
 // Rest API를 요청하기 위한 클래스
-public class RestAPIUtils {
+public class RestAPIUtil {
 
 	public static String get(String apiUrl, Map<String, String> requestHeaders) {
 		HttpURLConnection con = connect(apiUrl);

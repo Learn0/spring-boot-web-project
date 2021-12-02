@@ -8,7 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 // youtube를 검색하여 동영상을 실행하기 위한 Key를 가져옴
-public class YoutubeUtils {
+public class YoutubeUtil {
 
 	public static String getKey(String title) {
 		String key = "https://www.youtube.com/results?search_query=";

@@ -27,7 +27,7 @@ import shop.ourshopping.service.MusicService;
 import shop.ourshopping.service.RecipeService;
 import shop.ourshopping.service.RestaurantService;
 import shop.ourshopping.service.SeoulAttractionsService;
-import shop.ourshopping.utils.YoutubeUtils;
+import shop.ourshopping.utils.YoutubeUtil;
 import shop.ourshopping.vo.MovieVO;
 import shop.ourshopping.vo.RecipeVO;
 import shop.ourshopping.vo.RestaurantVO;
@@ -142,7 +142,7 @@ public class JsoupManager {
 						vo.setPoster(fileURL);
 						vo.setState(state);
 						vo.setIncrement(Integer.valueOf(incrment));
-						vo.setYoutubeKey(YoutubeUtils.getKey(vo.getTitle()));
+						vo.setYoutubeKey(YoutubeUtil.getKey(vo.getTitle()));
 
 						musicService.insertMusic(vo);
 						Thread.sleep(500);
@@ -493,7 +493,7 @@ public class JsoupManager {
 					} else {
 						vo.setStory("-");
 					}
-					vo.setYoutubeKey(YoutubeUtils.getKey(vo.getTitle()));
+					vo.setYoutubeKey(YoutubeUtil.getKey(vo.getTitle()));
 
 					movieService.insertMovie(vo);
 					Thread.sleep(500);

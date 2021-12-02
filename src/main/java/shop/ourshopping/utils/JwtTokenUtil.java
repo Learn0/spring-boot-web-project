@@ -30,7 +30,7 @@ import shop.ourshopping.dto.MemberDTO;
  * CSRF(다른 사이트에서 우리 사이트의 API 콜을 요청해 실행하는 공격)
  *  - refreshToken을 HTTP Only, Secure Cookie로 가져오고
  */
-public class JwtTokenUtils {
+public class JwtTokenUtil {
 
 	private static final String SECRET_KEY = "PRIVATE_KEY";
 

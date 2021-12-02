@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContextAware;
  *  빈 구성으로 등록하지 않은 클래스에서 
  *  ApplicationContext를 사용할 수 있도록 설정
  */
-public class ApplicationContextUtils implements ApplicationContextAware{
+public class ApplicationContextUtil implements ApplicationContextAware{
     
     private static ApplicationContext applicationContext;
     

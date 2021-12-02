@@ -10,6 +10,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '15'
 
 configurations {
+	// 재시작 없이 자동 리로드
 	developmentOnly
 	runtimeClasspath {
 		extendsFrom developmentOnly
@@ -24,10 +25,9 @@ repositories {
 }
 
 dependencies {
-	// 컴파일
-	// spring
+	// spring 추가 기능
 	implementation 'org.springframework:spring-context-support:5.3.9'
-	// security
+	// 스프링 시큐리티
 	implementation 'org.springframework.security:spring-security-taglibs'
 	// 웹과 관련된 기능
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -54,7 +54,7 @@ dependencies {
 	// tiles
 	implementation 'org.apache.tiles:tiles-jsp:3.0.8'
 	// jstl
-    implementation 'javax.servlet:jstl'    
+    implementation 'javax.servlet:jstl:1.2'    
     // jdbc log
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     // file
@@ -76,7 +76,6 @@ dependencies {
 	// stomp(웹소캣)
 	implementation 'org.webjars:stomp-websocket:2.3.3-1'
 	
-	
 	// 재시작 없이 자동 리로드
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	
@@ -86,6 +85,14 @@ dependencies {
 
 	// 런타임시 db 설정
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	
+	// jwt토큰
+	/*
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+	*/
 	
 	// WAR에 포함하지 않음
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'

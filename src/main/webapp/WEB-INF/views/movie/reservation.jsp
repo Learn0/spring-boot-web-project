@@ -131,11 +131,11 @@
 									<h3 style="color:white">성인</h3>
 									<ul id="adult" class="pagination" style="margin:0px">
 										<li class="active">
-											<a href="#" onclick="selectPeople(this)">0</a>
+											<a href="#none" onclick="selectPeople(this)">0</a>
 										</li>
 										<c:forEach var="item" begin="1" end="5" step="1">
 											<li>
-												<a href="#" onclick="selectPeople(this)">${item}</a>
+												<a href="#none" onclick="selectPeople(this)">${item}</a>
 											</li>
 										</c:forEach>
 									</ul>
@@ -144,11 +144,11 @@
 									<h3 style="color:white">청소년</h3>
 									<ul id="minors" class="pagination" style="margin:0px">
 										<li class="active">
-											<a href="#" onclick="selectPeople(this)">0</a>
+											<a href="#none" onclick="selectPeople(this)">0</a>
 										</li>
 										<c:forEach var="item" begin="1" end="5" step="1">
 											<li>
-												<a href="#" onclick="selectPeople(this)">${item}</a>
+												<a href="#none" onclick="selectPeople(this)">${item}</a>
 											</li>
 										</c:forEach>
 									</ul>

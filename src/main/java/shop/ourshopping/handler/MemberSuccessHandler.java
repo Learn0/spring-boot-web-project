@@ -25,7 +25,7 @@ import inet.ipaddr.ipv6.IPv6Address;
 import shop.ourshopping.component.AsyncCheck;
 import shop.ourshopping.entity.MemberEntity;
 import shop.ourshopping.service.MemberService;
-import shop.ourshopping.utils.StaticUtils;
+import shop.ourshopping.utils.StaticUtil;
 
 /*
  * 로그인 성공시 발생하는 이벤트로 이동할 url 지정,
@@ -93,7 +93,7 @@ public class MemberSuccessHandler implements AuthenticationSuccessHandler {
 				url = request.getContextPath() + "/";
 			}
 		}
-		StaticUtils.numberListTask = asyncCheck.process();
+		StaticUtil.numberListTask = asyncCheck.process();
 
 		response.sendRedirect(url);
 	}

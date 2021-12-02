@@ -37,8 +37,8 @@ import shop.ourshopping.dto.mybatis.BoardDTO;
 import shop.ourshopping.dto.mybatis.SearchDTO;
 import shop.ourshopping.service.BoardService;
 import shop.ourshopping.service.MemberService;
-import shop.ourshopping.utils.EncryptionUtils;
-import shop.ourshopping.utils.ValidUtils;
+import shop.ourshopping.utils.EncryptionUtil;
+import shop.ourshopping.utils.ValidUtil;
 
 // 주소를 매핑하여 게시판과 관련된 기능을 동작
 @Controller
@@ -101,8 +101,8 @@ public class BoardController extends BasicController {
 			}
 			if (!boardDTO.getPassword().isEmpty()) {
 				try {
-					SecretKeySpec key = EncryptionUtils.createSecretKey("password".toCharArray());
-					boardDTO.setPassword(EncryptionUtils.decrypt(boardDTO.getPassword(), key));
+					SecretKeySpec key = EncryptionUtil.createSecretKey("password".toCharArray());
+					boardDTO.setPassword(EncryptionUtil.decrypt(boardDTO.getPassword(), key));
 				} catch (Exception e) {
 					e.printStackTrace();
 					return messageRedirect("에러가 발생하였습니다.", "/board/list", MessageMethod.get, null,
@@ -223,9 +223,9 @@ public class BoardController extends BasicController {
 	public ResponseEntity<Boolean> insertBoard(final BoardDTO boardDTO, final MultipartFile[] files) {
 		boolean check = false;
 		try {
-			SecretKeySpec key = EncryptionUtils.createSecretKey("password".toCharArray());
+			SecretKeySpec key = EncryptionUtil.createSecretKey("password".toCharArray());
 			if (!boardDTO.getPassword().isEmpty()) {
-				boardDTO.setPassword(EncryptionUtils.encrypt(boardDTO.getPassword(), key));
+				boardDTO.setPassword(EncryptionUtil.encrypt(boardDTO.getPassword(), key));
 			}
 			check = boardService.insertBoard(boardDTO, files);
 		} catch (Exception e) {
@@ -252,8 +252,8 @@ public class BoardController extends BasicController {
 			@RequestParam(value = "password") final String password) {
 		boolean check = false;
 		try {
-			SecretKeySpec key = EncryptionUtils.createSecretKey("password".toCharArray());
-			check = EncryptionUtils.decrypt(boardService.selectBoard(idx).getPassword(), key).equals(password);
+			SecretKeySpec key = EncryptionUtil.createSecretKey("password".toCharArray());
+			check = EncryptionUtil.decrypt(boardService.selectBoard(idx).getPassword(), key).equals(password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -263,7 +263,7 @@ public class BoardController extends BasicController {
 
 	@PostMapping("/checkValidation")
 	public ResponseEntity<Map<String, String>> checkValidation(@Valid final BoardDTO boardDTO, Errors errors) {
-		Map<String, String> validatorResult = ValidUtils.validateHandling(errors);
+		Map<String, String> validatorResult = ValidUtil.validateHandling(errors);
 
 		return new ResponseEntity<Map<String, String>>(validatorResult, HttpStatus.OK);
 	}

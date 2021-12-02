@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 // 유효성 체크
-public class ValidUtils {
+public class ValidUtil {
 
 	public static Map<String, String> validateHandling(Errors errors) {
 		Map<String, String> validatorResult = new HashMap<String, String>();

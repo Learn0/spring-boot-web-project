@@ -36,7 +36,7 @@ import shop.ourshopping.service.MovieService;
 import shop.ourshopping.service.RecipeService;
 import shop.ourshopping.service.ReservationService;
 import shop.ourshopping.service.ShoppingBasketService;
-import shop.ourshopping.utils.ValidUtils;
+import shop.ourshopping.utils.ValidUtil;
 import shop.ourshopping.vo.MovieReservationVO;
 import shop.ourshopping.vo.RecipeVO;
 
@@ -229,7 +229,7 @@ public class MemberController extends BasicController {
 	@PostMapping("/checkValidation")
 	@ResponseBody
 	public Map<String, String> checkValidation(String updateCheck, @Valid final MemberDTO memberDTO, Errors errors) {
-		Map<String, String> validatorResult = ValidUtils.validateHandling(errors);
+		Map<String, String> validatorResult = ValidUtil.validateHandling(errors);
 		if (updateCheck != null) {
 			validatorResult.remove("valid_birthday");
 			if (memberDTO.getPassword().isEmpty()) {

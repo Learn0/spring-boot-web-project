@@ -111,17 +111,19 @@ public class DataSourceConfig {
 	// PlatformTransactionManager이 많으면 EntityManagerFactoryBuilder가
 	// 생성되지 않으므로 @Primary를 사용하여 생성
 	@Bean(name = "transactionManager_jpa")
-    @Primary
+	@Primary
 	public PlatformTransactionManager transactionManager(EntityManagerFactoryBuilder builder) {
 
 		return new JpaTransactionManager(entityManagerFactory(builder).getObject());
 	}
-	
+
 	// 트랜잭션 동시 적용
-    @Bean(name = "transactionManager")
+	@Bean(name = "transactionManager")
 	@Autowired
-    public PlatformTransactionManager transactionManager(@Qualifier("transactionManager_mybatis") PlatformTransactionManager txManager1, @Qualifier("transactionManager_jpa") PlatformTransactionManager txManager2) {
-    	
-    	return new ChainedTransactionManager(txManager1, txManager2);
-    }
+	public PlatformTransactionManager transactionManager(
+			@Qualifier("transactionManager_mybatis") PlatformTransactionManager txManager1,
+			@Qualifier("transactionManager_jpa") PlatformTransactionManager txManager2) {
+
+		return new ChainedTransactionManager(txManager1, txManager2);
+	}
 }

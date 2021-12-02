@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import shop.ourshopping.dto.mybatis.BasicReservationDTO;
 import shop.ourshopping.service.MemberService;
 import shop.ourshopping.service.ReservationService;
-import shop.ourshopping.utils.ValidUtils;
+import shop.ourshopping.utils.ValidUtil;
 
 // 예약과 관련된 기능을 동작
 @Controller
@@ -72,7 +72,7 @@ public class ReservationController {
 	@PostMapping("/checkValidation")
 	public ResponseEntity<Map<String, String>> checkValidation(@Valid final BasicReservationDTO reservationDTO,
 			Errors errors) {
-		Map<String, String> validatorResult = ValidUtils.validateHandling(errors);
+		Map<String, String> validatorResult = ValidUtil.validateHandling(errors);
 
 		return new ResponseEntity<Map<String, String>>(validatorResult, HttpStatus.OK);
 	}

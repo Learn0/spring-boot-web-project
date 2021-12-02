@@ -17,7 +17,7 @@ import com.google.gson.JsonObject;
 import shop.ourshopping.dto.mybatis.MusicDTO;
 import shop.ourshopping.dto.mybatis.SearchDTO;
 import shop.ourshopping.service.MusicService;
-import shop.ourshopping.utils.YoutubeUtils;
+import shop.ourshopping.utils.YoutubeUtil;
 
 // 음악과 관련된 기능을 동작하며 검색부분은 axios를 통한 rest 사용
 @Controller
@@ -38,7 +38,7 @@ public class MusicController extends BasicController {
 	public String searchMusic(SearchDTO searchDTO) {
 		List<MusicDTO> musicList = musicService.searchMusic(searchDTO);
 		for (int i = 0; i < musicList.size(); i++) {
-			musicList.get(i).setYoutubeKey(YoutubeUtils.getURL(musicList.get(i).getYoutubeKey(), true));
+			musicList.get(i).setYoutubeKey(YoutubeUtil.getURL(musicList.get(i).getYoutubeKey(), true));
 		}
 		Gson gson = new Gson();
 		JsonArray array = new JsonArray();

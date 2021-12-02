@@ -16,7 +16,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 // 데이터를 암호화 및 복호화
-public class EncryptionUtils {
+public class EncryptionUtil {
 	
 	private static final byte[] salt = new String("12345678").getBytes();
 	private static final int iterationCount = 40000;

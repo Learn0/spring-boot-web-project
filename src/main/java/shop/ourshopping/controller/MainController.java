@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.ourshopping.constant.MessageMethod;
 import shop.ourshopping.manager.JsonManager;
 import shop.ourshopping.service.RestaurantService;
-import shop.ourshopping.utils.RestAPIUtils;
+import shop.ourshopping.utils.RestAPIUtil;
 
 // 메인 페이지와 미완성한 url을 모아놓은 컨트롤러
 @PropertySource("classpath:/application-naver.properties")
@@ -67,7 +67,7 @@ public class MainController extends BasicController {
 			requestHeaders.put("X-Naver-Client-Secret", secret);
 
 			String url = "https://openapi.naver.com/v1/search/blog?query=" + keyword;
-			String responseBody = RestAPIUtils.get(url, requestHeaders);
+			String responseBody = RestAPIUtil.get(url, requestHeaders);
 
 			List<String> descriptionList = jsonManager.naverSearchJson(responseBody);
 			List<String> titleList = restaurantService.searchRestaurantTitle(address);
