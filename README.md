@@ -194,6 +194,12 @@
 	RewriteCond %{REQUEST_URI} =/sockjs-node  
 	RewriteRule  /(.*) ws://localhost:3000/$1 [P,L]
 
+
+---
+
+> ### MariaDB SSL 외부 접속
+https://ddart.net/xe/board/12867
+
 ---
 
 [참조한 WebSocket 블로그](https://dev-gorany.tistory.com/212?category=901854, "")
